@@ -1,10 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
 
-type StatesData = {
-  states: string[];
-};
-
 const url = "https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_state";
 
 export default async function getAllStates() {

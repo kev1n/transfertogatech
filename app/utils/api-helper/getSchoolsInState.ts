@@ -1,10 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import cheerio from "cheerio";
-
-type ResponseData = {
-  schools: School[];
-};
 
 export interface School {
   id: string;
