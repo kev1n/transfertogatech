@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import clientPromise from "../lib/mongodb";
-import mongoImportSchools from "../utils/mongo-helper/mongoImportSchools";
-import mongoImportStates from "../utils/mongo-helper/mongoImportStates";
-import mongoImportEquivalency from "../utils/mongo-helper/mongoImportEquivalency";
-import mongoMonthlyRequestLimiter from "../utils/mongo-helper/mongoMonthlyRequestLimiter";
+import clientPromise from "@/lib/mongodb";
+import mongoImportSchools from "@/lib/utils/mongo-helper/mongoImportSchools";
+
+import mongoImportStates from "@/lib/utils/mongo-helper/mongoImportStates";
+import mongoImportEquivalency from "@/lib/utils/mongo-helper/mongoImportEquivalency";
+import mongoMonthlyRequestLimiter from "@/lib/utils/mongo-helper/mongoMonthlyRequestLimiter";
 
 type SuccessResponseData = {
   success: true;
