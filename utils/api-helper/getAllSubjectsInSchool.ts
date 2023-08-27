@@ -20,7 +20,7 @@ interface Term {
 
 const url = "https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_subj_levl";
 
-export async function getAllSubjectsInSchool(
+export default async function getAllSubjectsInSchool(
   state: string | string[] | undefined,
   schoolId: string | string[] | undefined
 ) {
@@ -73,18 +73,4 @@ export async function getAllSubjectsInSchool(
     });
 
   return { subjects, levels, terms };
-}
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
-) {
-  const state = req.query.state;
-  const schoolId = req.query.schoolId;
-
-  const { subjects, levels, terms } = await getAllSubjectsInSchool(
-    state,
-    schoolId
-  );
-
-  res.status(200).json({ subjects, levels, terms });
 }

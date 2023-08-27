@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
 import cheerio from "cheerio";
 
@@ -8,7 +7,7 @@ type StatesData = {
 
 const url = "https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_state";
 
-export async function getAllStates() {
+export default async function getAllStates() {
   const request = await axios.post(url);
   const data = request.data;
 
@@ -25,13 +24,4 @@ export async function getAllStates() {
   });
 
   return stateList;
-}
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<StatesData>
-) {
-  const stateList = await getAllStates();
-
-  res.status(200).json({ states: stateList });
 }

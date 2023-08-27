@@ -14,7 +14,7 @@ export interface School {
 
 const url = "https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_school";
 
-export async function getSchoolsInState(state: string | string[] | undefined) {
+export default async function getSchoolsInState(state: string | string[] | undefined) {
   // Make the request to the Oscar API with the form data of "state_in=stateSymbol"
   const response = await axios.post(url, `state_in=${state}`);
 
@@ -31,16 +31,4 @@ export async function getSchoolsInState(state: string | string[] | undefined) {
     }
   });
   return schoolList;
-}
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
-) {
-  // Get the state symbol from the request
-  const state = req.query.state;
-
-  const schoolList = await getSchoolsInState(state);
-
-  res.status(200).json({ schools: schoolList });
 }
