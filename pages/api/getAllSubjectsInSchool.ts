@@ -19,13 +19,11 @@ interface Term {
 }
 
 const url = "https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_subj_levl";
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
-) {
-  const state = req.query.state;
-  const schoolId = req.query.schoolId;
 
+export async function getAllSubjectsInSchool(
+  state: string | string[] | undefined,
+  schoolId: string | string[] | undefined
+) {
   // Send a post request with data of "state_in=stateSymbol" and "sbgi_in=schoolId"
   const response = await axios.post(
     url,
@@ -73,6 +71,20 @@ export default async function handler(
         terms.push({ id, name });
       }
     });
+
+  return { subjects, levels, terms };
+}
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+) {
+  const state = req.query.state;
+  const schoolId = req.query.schoolId;
+
+  const { subjects, levels, terms } = await getAllSubjectsInSchool(
+    state,
+    schoolId
+  );
 
   res.status(200).json({ subjects, levels, terms });
 }

@@ -19,16 +19,12 @@ interface Class {
 const url =
   "https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_subj_levl_classes";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+export async function getEquivalencyForSchool(
+  state: string | string[],
+  schoolId: string | string[],
+  subject: string | string[],
+  term: string | string[]
 ) {
-  // Get the state symbol from the request
-  const state = req.query.state!;
-  const schoolId = req.query.schoolId!;
-  const subject = req.query.subject!;
-  const term = req.query.term!;
-
   let params = new URLSearchParams();
   params.append("state_in", state as string);
   params.append("nation_in", "");
@@ -79,6 +75,20 @@ export default async function handler(
       classes.push(classEntry);
     }
   });
+  return classes;
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponse<ResponseData>
+) {
+  // Get the state symbol from the request
+  const state = req.query.state!;
+  const schoolId = req.query.schoolId!;
+  const subject = req.query.subject!;
+  const term = req.query.term!;
+
+  const classes = await getEquivalencyForSchool(state, schoolId, subject, term);
 
   res.status(200).json({ classes });
 }
