@@ -1,12 +1,9 @@
 import { differenceInCalendarMonths } from "date-fns";
 import { MongoClient } from "mongodb";
-import { NextApiResponse } from "next";
-import { ResponseData } from "../../pages/api/monthlyMongoUpdate";
 
 export default async function mongoMonthlyRequestLimiter(
-  client: MongoClient,
-  res: NextApiResponse<ResponseData>
-) {
+  client: MongoClient
+): Promise<boolean> {
   const accessCollection = client.db("transfer").collection("lastAccessed");
 
   // Check the last time the route was accessed
@@ -20,10 +17,7 @@ export default async function mongoMonthlyRequestLimiter(
 
     // Check if a month has passed since the last access
     if (differenceInCalendarMonths(now, lastAccessDate) < 1) {
-      return res.status(403).json({
-        success: false,
-        error: "This route can only be accessed once per month.",
-      });
+      return false;
     }
   }
 
@@ -32,4 +26,6 @@ export default async function mongoMonthlyRequestLimiter(
     { $set: { date: now } },
     { upsert: true }
   );
+
+  return true;
 }

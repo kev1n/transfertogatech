@@ -1,19 +1,17 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import clientPromise from "../../lib/mongodb";
-import { differenceInCalendarMonths } from "date-fns";
 import mongoImportSchools from "../../utils/mongo-helper/mongoImportSchools";
 import mongoImportStates from "../../utils/mongo-helper/mongoImportStates";
 import mongoImportEquivalency from "../../utils/mongo-helper/mongoImportEquivalency";
-import { MongoClient } from "mongodb";
 import mongoMonthlyRequestLimiter from "../../utils/mongo-helper/mongoMonthlyRequestLimiter";
 
 type SuccessResponseData = {
-  "success": true;
+  success: true;
 };
 
 type ErrorResponseData = {
-  "success": false;
-  "error": string;
+  success: false;
+  error: string;
 };
 export type ResponseData = SuccessResponseData | ErrorResponseData;
 
@@ -24,7 +22,15 @@ export default async function handler(
   const client = await clientPromise;
   await client.connect();
 
-  await mongoMonthlyRequestLimiter(client, res);
+  const shouldProceed = await mongoMonthlyRequestLimiter(client);
+
+  if (!shouldProceed) {
+    return res.status(403).json({
+      success: false,
+      error: "This route can only be accessed once per month.",
+    });
+  }
+
   //logic
   const states = await mongoImportStates(client);
   
