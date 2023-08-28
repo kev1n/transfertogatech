@@ -1,15 +1,6 @@
+import { Class } from "@/types/mongo/mongotypes";
 import axios from "axios";
 import cheerio from "cheerio";
-
-interface Class {
-  className: string;
-  title: string;
-  level: string;
-  minimumGrade: string;
-  gaEquivalent: string;
-  gaEquivalentTitle: string;
-  creditHours: string;
-}
 
 const url =
   "https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_subj_levl_classes";

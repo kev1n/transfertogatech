@@ -1,15 +1,12 @@
 import axios from "axios";
 import cheerio from "cheerio";
-
-export interface School {
-  id: string;
-  name: string;
-  state: string;
-}
+import { School } from "@/types/mongo/mongotypes";
 
 const url = "https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_school";
 
-export default async function getSchoolsInState(state: string | string[] | undefined) {
+export default async function getSchoolsInState(
+  state: string | string[] | undefined
+) {
   // Make the request to the Oscar API with the form data of "state_in=stateSymbol"
   const response = await axios.post(url, `state_in=${state}`);
 
@@ -22,7 +19,11 @@ export default async function getSchoolsInState(state: string | string[] | undef
     const schoolId = $(element).attr("value");
     const schoolName = $(element).text();
     if (schoolId && schoolName) {
-      schoolList.push({ id: schoolId, name: schoolName, state: state as string });
+      schoolList.push({
+        id: schoolId,
+        name: schoolName,
+        state: state as string,
+      });
     }
   });
   return schoolList;

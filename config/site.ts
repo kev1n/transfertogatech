@@ -1,11 +1,10 @@
 import { SiteConfig } from "@/types";
 
 export const siteConfig: SiteConfig = {
-  name: "Taxonomy",
-  description:
-    "An open source application built using the new router, server components and everything new in Next.js 13.",
-  url: "https://tx.shadcn.com",
+  name: "transfer to gatech",
+  description: "A tool to help prospective students transfer to Georgia Tech.",
+  url: "https://transfertogatech.com",
   links: {
-    github: "https://github.com/shadcn/taxonomy",
+    github: "https://github.com/kev1n/transfertogatech",
   },
 };

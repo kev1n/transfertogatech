@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import { School } from "../api-helper/getSchoolsInState";
+import { School } from "@/types/mongo/mongotypes";
 import getAllSubjectsInSchool from "../api-helper/getAllSubjectsInSchool";
 import getEquivalencyForSchool from "../api-helper/getEquivalencyForSchool";
 
