@@ -15,5 +15,13 @@ export default async function mongoImportSchools(
     allSchools.push(...schools);
   }
 
+  const filter = { docType: "schoolsList" };
+  const update = {
+    $set: { schools: allSchools, docType: "schoolsList" },
+  };
+
+  const options = { upsert: true };
+
+  collection.updateOne(filter, update, options);
   return allSchools;
 }

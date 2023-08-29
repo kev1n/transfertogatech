@@ -37,9 +37,9 @@ export const Icons = {
       viewBox="0 0 400 400"
       fill="none"
       stroke="currentColor"
-      stroke-width="16"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="16"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       {...props}
     >
       <path d="M148.113 270.455C178.811 224.075 242.668 181.298 297.992 215.94C304.883 220.254 314.779 228.618 316.462 236.906C325.434 281.055 219.899 337.713 168.712 307.497C164.995 305.3 145.854 281.143 143.853 281.636C137.464 283.209 118.718 290.291 114.019 294.914C113.573 295.353 132.91 288.624 150.246 288.624" />

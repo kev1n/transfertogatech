@@ -11,6 +11,7 @@
     "@radix-ui/react-dropdown-menu": "^2.0.5",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-popover": "^1.0.6",
+    "@radix-ui/react-scroll-area": "^1.0.4",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.4",
     "@vercel/analytics": "^1.0.2",
@@ -20,6 +21,7 @@
     "clsx": "^2.0.0",
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
+    "debug": "^4.3.4",
     "lucide-react": "^0.92.0",
     "mongodb": "^4.8.1",
     "next": "latest",
@@ -27,6 +29,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.45.4",
+    "supports-color": "^8.1.1",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.6",
     "zod": "^3.22.2"

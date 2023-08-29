@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -17,27 +17,50 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
+interface Option {
+  value: string;
+  label: string;
+}
 interface ComboboxFormProps {
-  options: { value: string; label: string }[];
+  optionsFetcher: () => Promise<Option[]>;
   placeholder: string;
   noOptionsMessage: string;
   searchString: string;
   value: string;
   setValue: (value: string) => void;
+  label: string;
+  setLabel: (label: string) => void;
 }
 
 export function Combobox(props: ComboboxFormProps) {
   const {
-    options,
+    optionsFetcher,
     placeholder,
     noOptionsMessage,
     searchString,
     value,
     setValue,
+    label,
+    setLabel,
   } = props;
+  const [options, setOptions] = useState<{ value: string; label: string }[]>(
+    []
+  );
 
-  const [open, setOpen] = React.useState(false);
+  useEffect(() => {
+    if (options.length) {
+      return;
+    }
+    const unsortedOptions = optionsFetcher();
+    unsortedOptions.then((options) => {
+      options.sort((a, b) => a.label.localeCompare(b.label));
+      setOptions(options);
+    });
+  }, [options]);
+
+  const [open, setOpen] = useState(false);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -46,37 +69,45 @@ export function Combobox(props: ComboboxFormProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[400px] justify-between"
         >
-          {value
-            ? options.find((option) => option.value === value)?.label
-            : placeholder}
+          {value ? label : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+
+      <PopoverContent className="w-[400px] p-0 h-[200px]">
         <Command>
           <CommandInput placeholder={searchString} />
           <CommandEmpty>{noOptionsMessage}</CommandEmpty>
-          <CommandGroup>
-            {options.map((option) => (
-              <CommandItem
-                key={option.value}
-                onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue);
-                  setOpen(false);
-                }}
-              >
-                <Check
-                  className={cn(
-                    "mr-2 h-4 w-4",
-                    value === option.value ? "opacity-100" : "opacity-0"
-                  )}
-                />
-                {option.label}
-              </CommandItem>
-            ))}
-          </CommandGroup>
+          <ScrollArea className="h-96">
+            <CommandGroup>
+              {options.length &&
+                options.map((option) => (
+                  <CommandItem
+                    key={option.value}
+                    onSelect={(currentValue) => {
+                      if (currentValue === value) {
+                        setValue("");
+                        setLabel("");
+                      } else {
+                        setValue(option.value);
+                        setLabel(option.label);
+                      }
+                      setOpen(false);
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        "mr-2 h-4 w-4",
+                        value === option.value ? "opacity-100" : "opacity-0"
+                      )}
+                    />
+                    {option.label}
+                  </CommandItem>
+                ))}
+            </CommandGroup>
+          </ScrollArea>
         </Command>
       </PopoverContent>
     </Popover>
