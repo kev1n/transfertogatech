@@ -9,7 +9,7 @@ export function ProfileForm() {
   const [schoolLabel, setSchoolLabel] = useState<string>("");
   const [schoolValue, setSchoolValue] = useState<string>("");
 
-  console.log(schoolLabel, schoolValue)
+  
   return (
     <form className="space-y-8 lg:mx-10 md:mx-8">
       <Combobox
