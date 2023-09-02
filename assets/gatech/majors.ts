@@ -7,7 +7,7 @@ interface OR {
 interface AND {
   AND: string[];
 }
-interface Requirement {
+export interface Requirement {
   AND?: string[];
   OR?: string[];
 }
@@ -28,7 +28,7 @@ interface BuiltMajor {
 }
 
 class MajorBuilder {
-  private major: BuiltMajor;
+  public major: BuiltMajor;
 
   //all majors need english and math
   constructor(majorName: string) {
@@ -146,44 +146,98 @@ function starterMajor(majorName: string): MajorBuilder {
   return new MajorBuilder(majorName);
 }
 
-export const majors = [
-  starterMajor("Aerospace Engineering").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Applied Languages and Intercultural Studies").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("Applied Physics").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Architecture").addPhys().build(),
-  starterMajor("Atmospheric and Oceanic Sciences").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Biochemistry").addCalc2().addChem1().addChem2().addPhys().build(),
-  starterMajor("Biology").addCalc2().addChem1().addChem2().addPhys().build(),
-  starterMajor("Biomedical Engineering").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Building Construction").addPhys().build(),
-  starterMajor("Business Administration").addCalc2().addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("Chemical and Biomolecular Engineering").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Chemistry").addCalc2().addChem1().addChem2().build(),
-  starterMajor("Civil Engineering").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Computational Media").addCalc2().addLabScienceElective1().addLabScienceElective2().addComputerScience().build(),
-  starterMajor("Computer Engineering").addCalc2().addChem1().addPhys().addComputerScience().build(),
-  starterMajor("Computer Science").addCalc2().addLabScienceElective1().addLabScienceElective2().addComputerScience().build(),
-  starterMajor("Earth and Atmospheric Sciences").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Economics").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("Economics & International Affairs").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("Electrical Engineering").addCalc2().addChem1().addPhys().addComputerScience().build(),
-  starterMajor("Environmental Engineering").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Enviornmental Science").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Global Economics and Modern Languages").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("History, Technology, and Society").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("Industrial Design").addPhys().build(),
-  starterMajor("Industrial Engineering").addCalc2().addPhys().addLabScienceElective1().build(),
-  starterMajor("International Affairs").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("International Affairs & Modern Language").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("Literature, Media, and Communication").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("Materials Science and Engineering").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Mathematics").addCalc2().addPhys().addLabScienceElective1().build(),
-  starterMajor("Mechanical Engineering").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Music Technology").addPhys().build(),
-  starterMajor("Neuroscience").addCalc2().addBiology1().addChem1().build(),
-  starterMajor("Nuclear and Radiological Engineering").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Physics").addCalc2().addChem1().addPhys().build(),
-  starterMajor("Psychology").addCalc2().addBiology1AND2().build(),
-  starterMajor("Public Policy").addLabScienceElective1().addLabScienceElective2().build(),
-  starterMajor("Solid Earth and Planetary Sciences").addCalc2().addChem1().addPhys().build(),
-]
+type MajorExport = {
+  [key: string]: BuiltMajor;
+};
+
+export const majors: MajorExport = {
+  "Aerospace Engineering": starterMajor("Aerospace Engineering").addCalc2().addChem1().addPhys().build(),
+  "Applied Languages and Intercultural Studies": starterMajor("Applied Languages and Intercultural Studies").addLabScienceElective1().addLabScienceElective2().build(),
+  "Applied Physics": starterMajor("Applied Physics").addCalc2().addChem1().addPhys().build(),
+  "Architecture": starterMajor("Architecture").addPhys().build(),
+  "Atmospheric and Oceanic Sciences": starterMajor("Atmospheric and Oceanic Sciences").addCalc2().addChem1().addPhys().build(),
+  "Biochemistry": starterMajor("Biochemistry").addCalc2().addChem1().addChem2().addPhys().build(),
+  "Biology": starterMajor("Biology").addCalc2().addChem1().addChem2().addPhys().build(),
+  "Biomedical Engineering": starterMajor("Biomedical Engineering").addCalc2().addChem1().addPhys().build(),
+  "Building Construction": starterMajor("Building Construction").addPhys().build(),
+  "Business Administration": starterMajor("Business Administration").addCalc2().addLabScienceElective1().addLabScienceElective2().build(),
+  "Chemical and Biomolecular Engineering": starterMajor("Chemical and Biomolecular Engineering").addCalc2().addChem1().addPhys().build(),
+  "Chemistry": starterMajor("Chemistry").addCalc2().addChem1().addChem2().build(),
+  "Civil Engineering": starterMajor("Civil Engineering").addCalc2().addChem1().addPhys().build(),
+  "Computational Media": starterMajor("Computational Media").addCalc2().addLabScienceElective1().addLabScienceElective2().addComputerScience().build(),
+  "Computer Engineering": starterMajor("Computer Engineering").addCalc2().addChem1().addPhys().addComputerScience().build(),
+  "Computer Science": starterMajor("Computer Science").addCalc2().addLabScienceElective1().addLabScienceElective2().addComputerScience().build(),
+  "Earth and Atmospheric Sciences": starterMajor("Earth and Atmospheric Sciences").addCalc2().addChem1().addPhys().build(),
+  "Economics": starterMajor("Economics").addLabScienceElective1().addLabScienceElective2().build(),
+  "Economics & International Affairs": starterMajor("Economics & International Affairs").addLabScienceElective1().addLabScienceElective2().build(),
+  "Electrical Engineering": starterMajor("Electrical Engineering").addCalc2().addChem1().addPhys().addComputerScience().build(),
+  "Environmental Engineering": starterMajor("Environmental Engineering").addCalc2().addChem1().addPhys().build(),
+  "Enviornmental Science": starterMajor("Enviornmental Science").addCalc2().addChem1().addPhys().build(),
+  "Global Economics and Modern Languages": starterMajor("Global Economics and Modern Languages").addLabScienceElective1().addLabScienceElective2().build(),
+  "History, Technology, and Society": starterMajor("History, Technology, and Society").addLabScienceElective1().addLabScienceElective2().build(),
+  "Industrial Design": starterMajor("Industrial Design").addPhys().build(),
+  "Industrial Engineering": starterMajor("Industrial Engineering").addCalc2().addPhys().addLabScienceElective1().build(),
+  "International Affairs": starterMajor("International Affairs").addLabScienceElective1().addLabScienceElective2().build(),
+  "International Affairs & Modern Language": starterMajor("International Affairs & Modern Language").addLabScienceElective1().addLabScienceElective2().build(),
+  "Literature, Media, and Communication": starterMajor("Literature, Media, and Communication").addLabScienceElective1().addLabScienceElective2().build(),
+  "Materials Science and Engineering": starterMajor("Materials Science and Engineering").addCalc2().addChem1().addPhys().build(),
+  "Mathematics": starterMajor("Mathematics").addCalc2().addPhys().addLabScienceElective1().build(),
+  "Mechanical Engineering": starterMajor("Mechanical Engineering").addCalc2().addChem1().addPhys().build(),
+  "Music Technology": starterMajor("Music Technology").addPhys().build(),
+  "Neuroscience": starterMajor("Neuroscience").addCalc2().addBiology1().addChem1().build(),
+  "Nuclear and Radiological Engineering": starterMajor("Nuclear and Radiological Engineering").addCalc2().addChem1().addPhys().build(),
+  "Physics": starterMajor("Physics").addCalc2().addChem1().addPhys().build(),
+  "Psychology": starterMajor("Psychology").addCalc2().addBiology1AND2().build(),
+  "Public Policy": starterMajor("Public Policy").addLabScienceElective1().addLabScienceElective2().build(),
+  "Solid Earth and Planetary Sciences": starterMajor("Solid Earth and Planetary Sciences").addCalc2().addChem1().addPhys().build(),
+}
+
+export const majorsList = [
+  "Aerospace Engineering",
+  "Applied Languages and Intercultural Studies",
+  "Applied Physics",
+  "Architecture",
+  "Atmospheric and Oceanic Sciences",
+  "Biochemistry",
+  "Biology",
+  "Biomedical Engineering",
+  "Building Construction",
+  "Business Administration",
+  "Chemical and Biomolecular Engineering",
+  "Chemistry",
+  "Civil Engineering",
+  "Computational Media",
+  "Computer Engineering",
+  "Computer Science",
+  "Earth and Atmospheric Sciences",
+  "Economics",
+  "Economics & International Affairs",
+  "Electrical Engineering",
+  "Environmental Engineering",
+  "Enviornmental Science",
+  "Global Economics and Modern Languages",
+  "History, Technology, and Society",
+  "Industrial Design",
+  "Industrial Engineering",
+  "International Affairs",
+  "International Affairs & Modern Language",
+  "Literature, Media, and Communication",
+  "Materials Science and Engineering",
+  "Mathematics",
+  "Mechanical Engineering",
+  "Music Technology",
+  "Neuroscience",
+  "Nuclear and Radiological Engineering",
+  "Physics",
+  "Psychology",
+  "Public Policy",
+  "Solid Earth and Planetary Sciences",
+];
+
+export async function getMajors() {
+  //return the list as {value: {major}, label: {major}}
+  return Object.entries(majors).map(([key, value]) => ({
+    value: key,
+    label: key,
+  }));
+}

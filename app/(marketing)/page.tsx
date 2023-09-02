@@ -2,7 +2,6 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
-import { ProfileForm } from "@/components/config-form";
 
 export default async function IndexPage() {
   const stars = "5";
@@ -37,7 +36,6 @@ export default async function IndexPage() {
         id="features"
         className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
       >
-        <ProfileForm />
       </section>
       <section id="open-source" className="container py-8 md:py-12 lg:py-24">
         <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
