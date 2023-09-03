@@ -21,13 +21,13 @@ export default async function MarketingLayout({
           <MainNav items={marketingConfig.mainNav} />
           <nav className="flex items-center">
             <Link
-              href="https://oscar.gatech.edu/pls/bprod/wwsktrna.P_find_location"
+              href="/list"
               className={cn(
                 buttonVariants({ variant: "secondary", size: "sm" }),
                 "px-4 mr-2"
               )}
             >
-              View Equivalency Table
+              Plan Your Transfer
             </Link>
             <ModeToggle />
           </nav>

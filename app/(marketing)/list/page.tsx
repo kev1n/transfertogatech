@@ -15,7 +15,7 @@ export default function List() {
     <>
       <section
         id="features"
-        className="container space-y-6 bg-slate-50 dark:bg-transparent py-6 md:py-10 lg:py-20"
+        className="container space-y-6 bg-slate-50 dark:bg-transparent py-5 md:py-7 lg:py-15"
       >
         <h1 className="text-center text-6xl text-yellow-600 dark:text-yellow-500">
           Plan Your Transfer

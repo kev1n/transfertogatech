@@ -54,15 +54,19 @@ export default function ClassPickerForm() {
 
   return (
     <Table>
-      <TableCaption>Select the school and major to get started.</TableCaption>
+      <TableCaption>
+        {schoolValue && majorValue
+          ? `Transfer Plan from ${schoolLabel} to Georgia Tech`
+          : "Select the school and major to get started."}
+      </TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Subject</TableHead>
-          <TableHead>GT Class</TableHead>
-          <TableHead>Your Equivalent</TableHead>
-          <TableHead>Class Name</TableHead>
-          <TableHead>Transfer Credits</TableHead>
-          <TableHead className="text-right">Close</TableHead>
+          <TableHead className="w-[100px]">Subject</TableHead>
+          <TableHead className="w-[150px]">GT Class</TableHead>
+          <TableHead className="w-[300px]">Your Equivalent</TableHead>
+          <TableHead className="w-[150px]">Class Name</TableHead>
+          <TableHead className="w-[30px]">GT Credits</TableHead>
+          <TableHead className="w-[30px] text-right">Close</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -226,7 +230,7 @@ function ClassRow({ subject, gtClass, equivalencies }: RowProps) {
           <DialogTrigger asChild>
             <Button
               variant={selectedClassConfirmed ? "outline" : "secondary"}
-              className="w-full"
+              className="w-full h-full"
             >
               {selectedClassConfirmed
                 ? selectedClassConfirmed.className
@@ -248,10 +252,26 @@ function ClassRow({ subject, gtClass, equivalencies }: RowProps) {
                         selectedClass?.className === equivalent.className &&
                         "border-primary"
                       }`}
-                      onClick={() => setSelectedClass(equivalent)}
+                      onClick={() => {
+                        if (selectedClass?.className === equivalent.className) {
+                          setSelectedClass(undefined);
+                        } else {
+                          setSelectedClass(equivalent);
+                        }
+                      }}
                     >
                       <CardHeader>
-                        <CardTitle>{equivalent.className}</CardTitle>
+                        <CardTitle>
+                          <div className="flex items-center justify-between">
+                            {equivalent.className}
+                            <div className="w-7 h-7 border-2 border-gray-800 dark:border-gray-200 rounded-full relative">
+                              {selectedClass?.className ===
+                                equivalent.className && (
+                                <div className="absolute bg-gray-800 dark:bg-gray-200 rounded-full w-5 h-5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                              )}
+                            </div>
+                          </div>
+                        </CardTitle>
                         <CardDescription>{equivalent.title}</CardDescription>
                       </CardHeader>
                       <CardContent>
@@ -269,6 +289,7 @@ function ClassRow({ subject, gtClass, equivalencies }: RowProps) {
             </DialogHeader>
             <DialogFooter>
               <Button
+                variant={selectedClass ? "default" : "secondary"}
                 className="w-full"
                 onClick={() => {
                   setSelectedClassConfirmed(selectedClass);
