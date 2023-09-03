@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
@@ -60,6 +60,23 @@ export function Combobox(props: ComboboxFormProps) {
     });
   }, [options]);
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [buttonWidth, setButtonWidth] = useState(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (buttonRef.current) {
+        setButtonWidth(buttonRef.current.offsetWidth);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [buttonRef]);
+
   const [open, setOpen] = useState(false);
 
   return (
@@ -70,13 +87,14 @@ export function Combobox(props: ComboboxFormProps) {
           role="combobox"
           aria-expanded={open}
           className="w-full justify-between"
+          ref={buttonRef}
         >
           {value ? label : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-full p-0 h-[200px]">
+      <PopoverContent className="p-0 h-[200px]" style={{ width: buttonWidth }}>
         <Command>
           <CommandInput placeholder={searchString} />
           <CommandEmpty>{noOptionsMessage}</CommandEmpty>

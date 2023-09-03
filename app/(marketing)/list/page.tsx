@@ -17,11 +17,7 @@ export default function List() {
         id="features"
         className="container space-y-6 bg-slate-50 dark:bg-transparent py-6 md:py-10 lg:py-20"
       >
-        <h1
-          className={`text-center text-6xl ${
-            theme == "light" ? "text-yellow-600" : "text-yellow-500"
-          }`}
-        >
+        <h1 className="text-center text-6xl text-yellow-600 dark:text-yellow-500">
           Plan Your Transfer
         </h1>
         <SchoolMajorContextProvider>
