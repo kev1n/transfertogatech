@@ -61,7 +61,7 @@ export function Combobox(props: ComboboxFormProps) {
   }, [options]);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [buttonWidth, setButtonWidth] = useState(0);
+  const [buttonWidth, setButtonWidth] = useState(500);
 
   useEffect(() => {
     const handleResize = () => {
@@ -75,6 +75,12 @@ export function Combobox(props: ComboboxFormProps) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
+  }, [buttonRef]);
+
+  useEffect(() => {
+    if (buttonRef.current) {
+      setButtonWidth(buttonRef.current.offsetWidth);
+    }
   }, [buttonRef]);
 
   const [open, setOpen] = useState(false);
