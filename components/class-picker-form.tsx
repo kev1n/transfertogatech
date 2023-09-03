@@ -61,11 +61,11 @@ export default function ClassPickerForm() {
       </TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Subject</TableHead>
+          <TableHead className="w-[75px]">Subject</TableHead>
           <TableHead className="w-[150px]">GT Class</TableHead>
-          <TableHead className="w-[300px]">Your Equivalent</TableHead>
+          <TableHead className="w-[250px]">Equivalent</TableHead>
           <TableHead className="w-[150px]">Class Name</TableHead>
-          <TableHead className="w-[30px]">GT Credits</TableHead>
+          <TableHead className="w-[30px]">Credits</TableHead>
           <TableHead className="w-[30px] text-right">Close</TableHead>
         </TableRow>
       </TableHeader>
@@ -82,40 +82,59 @@ export default function ClassPickerForm() {
               />
             </>
           ))}
+        {equivalencies && schoolValue && majorValue && (
+          <ElectiveRow equivalents={equivalencies.equivalents} />
+        )}
       </TableBody>
     </Table>
   );
 }
 
-interface SubjectRowProps {
+interface MultipleOrRowProps {
   subjectName: string;
-  schoolValue?: string;
   requirements: Requirement;
   equivalents?: Class[];
+  label: string;
 }
 
-function LabScienceRow({
+function MultipleOrRow({
   subjectName,
   requirements,
   equivalents,
-}: SubjectRowProps) {
+  label,
+}: MultipleOrRowProps) {
   const parsedValidGTClasses = requirements.OR?.map((gtClass) =>
     removeSpacesAndLowercase(gtClass)
   );
+  const matchedEquivalencies = equivalents?.filter((equivalent) =>
+    parsedValidGTClasses?.includes(
+      removeSpacesAndLowercase(equivalent.gaEquivalent)
+    )
+  );
+
+  let popoverLabel = "";
+  //return a string of the gtClasses
+  requirements.OR?.map((req) => {
+    popoverLabel += popoverLabel ? ` OR ${req}` : req;
+  });
 
   return (
     <>
       <ClassRow
         subject={subjectName}
-        gtClass="CHEM, BIO, PHYS, or EAS lab"
-        equivalencies={equivalents?.filter((equivalent) =>
-          parsedValidGTClasses?.includes(
-            removeSpacesAndLowercase(equivalent.gaEquivalent)
-          )
-        )}
+        gtClass={label}
+        equivalencies={matchedEquivalencies}
+        popoverLabel={popoverLabel}
       />
     </>
   );
+}
+
+interface SubjectRowProps {
+  subjectName: string;
+  schoolValue: string;
+  requirements: Requirement;
+  equivalents?: Class[];
 }
 function SubjectRows({
   subjectName,
@@ -131,12 +150,20 @@ function SubjectRows({
   return (
     <>
       {subjectName === "LAB1" || subjectName === "LAB2" ? (
-        <LabScienceRow
+        <MultipleOrRow
           key={subjectName}
           subjectName={subjectName}
-          schoolValue={schoolValue}
           requirements={requirements}
           equivalents={equivalents}
+          label={"CHEM, BIO, PHYS, or EAS lab"}
+        />
+      ) : requirements.OR ? (
+        <MultipleOrRow
+          key={subjectName}
+          subjectName={subjectName}
+          requirements={requirements}
+          equivalents={equivalents}
+          label={`Multiple ${subjectName} options`}
         />
       ) : (
         <>
@@ -178,22 +205,6 @@ function SubjectRows({
               )}
             </>
           )}
-          {requirements.OR && (
-            <>
-              {requirements.OR.length > 1 && <IrrelevantRow option="OR" />}
-              {requirements.OR.slice(1, requirements.OR.length).map((item) => (
-                <ClassRow
-                  key={item}
-                  gtClass={item}
-                  equivalencies={equivalents?.filter(
-                    (equivalent) =>
-                      removeSpacesAndLowercase(equivalent.gaEquivalent) ===
-                      removeSpacesAndLowercase(item)
-                  )}
-                />
-              ))}
-            </>
-          )}
         </>
       )}
     </>
@@ -213,9 +224,10 @@ interface RowProps {
   subject?: string;
   gtClass?: string;
   equivalencies?: Class[];
+  popoverLabel?: string;
 }
 
-function ClassRow({ subject, gtClass, equivalencies }: RowProps) {
+function ClassRow({ subject, gtClass, equivalencies, popoverLabel }: RowProps) {
   const [selectedClass, setSelectedClass] = useState<Class>();
   const [selectedClassConfirmed, setSelectedClassConfirmed] = useState<Class>();
 
@@ -238,13 +250,15 @@ function ClassRow({ subject, gtClass, equivalencies }: RowProps) {
             </Button>
           </DialogTrigger>
           {/*<DialogContent className="overflow-y-scroll max-h-screen">*/}
-          <DialogContent className="max-w-screen-md mt-5 overflow-y-scroll max-h-screen">
+          <DialogContent className="max-w-screen-lg mt-5 overflow-y-scroll max-h-screen">
             <DialogHeader>
-              <DialogTitle>Options For Georgia's {gtClass}</DialogTitle>
+              <DialogTitle>
+                Options For Georgia's {popoverLabel ? popoverLabel : gtClass}
+              </DialogTitle>
               <DialogDescription>
                 {equivalencies?.length === 0 &&
                   "No equivalencies found. This could either mean that this school does not have the necessary courses to satisfy the GT requirement, or that not all of the appropriate courses have been evaluated yet"}
-                <div className="mt-2 grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-2">
+                <div className="mt-2 grid lg:grid-cols-3 grid-cols-2 gap-2">
                   {equivalencies?.map((equivalent) => (
                     <Card
                       key={equivalent.className}
@@ -324,4 +338,155 @@ function ClassRow({ subject, gtClass, equivalencies }: RowProps) {
 //function that takes in a string and removes all spaces and lowercases the string
 function removeSpacesAndLowercase(str: string) {
   return str.replace(/\s/g, "").toLowerCase();
+}
+
+interface ElectiveRowProps {
+  equivalents: Class[];
+}
+
+function ElectiveRow({ equivalents }: ElectiveRowProps) {
+  const [selectedElective, setSelectedElective] = useState<Class>();
+  const [selectedElectiveConfirmed, setSelectedElectiveConfirmed] =
+    useState<Class>();
+
+  const [open, setOpen] = useState(false);
+
+  type GroupedEquivalentsType = {
+    [key: string]: typeof equivalents; // or be more specific with the type if you have one for `equivalent`
+  };
+  const groupedEquivalents = equivalents?.reduce(
+    (acc: GroupedEquivalentsType, equivalent) => {
+      //note: the split on the next line uses an invisible character
+      const department = equivalent.className.split("  ")[0]; // Assuming the format is always "DEPARTMENT NUMBER"
+
+      if (equivalent.creditHours == "0.0") return acc;
+      if (!acc[department]) {
+        acc[department] = [];
+      }
+      acc[department].push(equivalent);
+      return acc;
+    },
+    {}
+  );
+
+  return (
+    <>
+      <TableRow>
+        <TableCell>Elective</TableCell>
+        <TableCell>Any GT Elective</TableCell>
+        <TableCell>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant={selectedElectiveConfirmed ? "outline" : "ghost"}
+                className="w-full h-full"
+              >
+                {selectedElectiveConfirmed
+                  ? selectedElectiveConfirmed.className
+                  : "+ Choose Equivalent Elective"}
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-screen-lg mt-5 overflow-y-scroll max-h-screen">
+              <DialogHeader>
+                <DialogTitle>Options For Electives</DialogTitle>
+                <DialogDescription>
+                  {equivalents?.length === 0 &&
+                    "No equivalencies found. Please check again later."}
+                  {groupedEquivalents &&
+                    Object.entries(groupedEquivalents).map(
+                      ([department, deptEquivalents]) => (
+                        <div key={department}>
+                          <h2>{department} Department</h2>
+                          <div className="mt-2 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-2">
+                            {deptEquivalents.map(
+                              (equivalent) =>
+                                equivalent.creditHours != "0.0" && (
+                                  <Card
+                                    key={
+                                      equivalent.className +
+                                      equivalent.gaEquivalent
+                                    }
+                                    className={`cursor-pointer hover:border-primary ${
+                                      selectedElective?.className ===
+                                        equivalent.className && "border-primary"
+                                    }`}
+                                    onClick={() => {
+                                      if (
+                                        selectedElective?.className ===
+                                        equivalent.className
+                                      ) {
+                                        setSelectedElective(undefined);
+                                      } else {
+                                        setSelectedElective(equivalent);
+                                      }
+                                    }}
+                                  >
+                                    <CardHeader>
+                                      <CardTitle>
+                                        <div className="flex items-center justify-between">
+                                          {equivalent.className}
+                                          <div className="w-7 h-7 border-2 border-gray-800 dark:border-gray-200 rounded-full relative">
+                                            {selectedElective?.className ===
+                                              equivalent.className && (
+                                              <div className="absolute bg-gray-800 dark:bg-gray-200 rounded-full w-5 h-5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </CardTitle>
+                                      <CardDescription>
+                                        {equivalent.title}
+                                      </CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                      <p>
+                                        {equivalent.className} -&gt;{" "}
+                                        {equivalent.gaEquivalent}
+                                      </p>
+                                    </CardContent>
+                                    <CardFooter>
+                                      <p>{equivalent.creditHours} credits</p>
+                                    </CardFooter>
+                                  </Card>
+                                )
+                            )}
+                          </div>
+                        </div>
+                      )
+                    )}
+                </DialogDescription>
+              </DialogHeader>
+              <DialogFooter>
+                <Button
+                  variant={selectedElective ? "default" : "secondary"}
+                  className="w-full"
+                  onClick={() => {
+                    setSelectedElectiveConfirmed(selectedElective);
+                    setOpen(false);
+                  }}
+                >
+                  {equivalents?.length === 0 ? "Close" : "Select Elective"}
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+        </TableCell>
+        {selectedElectiveConfirmed && (
+          <>
+            <TableCell>{selectedElectiveConfirmed.title}</TableCell>
+            <TableCell>{selectedElectiveConfirmed.creditHours}</TableCell>
+            <TableCell>
+              <Icons.close
+                className="float-right cursor-pointer"
+                onClick={() => {
+                  setSelectedElective(undefined);
+                  setSelectedElectiveConfirmed(undefined);
+                }}
+              />
+            </TableCell>
+          </>
+        )}
+      </TableRow>
+      {selectedElectiveConfirmed && <ElectiveRow equivalents={equivalents} />}
+    </>
+  );
 }

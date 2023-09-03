@@ -7,10 +7,8 @@ import {
   SchoolMajorContextProvider,
 } from "@/components/config-form";
 import { useTheme } from "next-themes";
-import { useContext } from "react";
 
 export default function List() {
-  const { setTheme, theme } = useTheme();
   return (
     <>
       <section
