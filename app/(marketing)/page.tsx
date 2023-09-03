@@ -2,6 +2,8 @@ import { siteConfig } from "@/config/site";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
+import Image from "next/image";
+import sslight from "@/public/sslight.png";
 
 export default async function IndexPage() {
   const stars = "5";
@@ -18,7 +20,7 @@ export default async function IndexPage() {
             students.
           </p>
           <div className="space-x-4">
-            <Link href="/login" className={cn(buttonVariants({ size: "lg" }))}>
+            <Link href="/list" className={cn(buttonVariants({ size: "lg" }))}>
               Get Started
             </Link>
             <Link
@@ -34,8 +36,9 @@ export default async function IndexPage() {
       </section>
       <section
         id="features"
-        className="container space-y-6 bg-slate-50 py-8 dark:bg-transparent md:py-12 lg:py-24"
+        className="container space-y-6 bg-slate-100 py-8 dark:bg-transparent md:py-12 lg:py-24"
       >
+        <Image src={sslight} alt="Picture of the author" />
       </section>
       <section id="open-source" className="container py-8 md:py-12 lg:py-24">
         <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
@@ -75,7 +78,7 @@ export default async function IndexPage() {
               <div className="flex items-center">
                 <div className="h-4 w-4 border-y-8 border-l-0 border-r-8 border-solid border-muted border-y-transparent"></div>
                 <div className="flex h-10 items-center rounded-md border border-muted bg-muted px-4 font-medium">
-                  {stars} stars on GitHub
+                  {"At least a few"} stars on GitHub
                 </div>
               </div>
             </Link>
