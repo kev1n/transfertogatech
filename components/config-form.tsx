@@ -69,7 +69,7 @@ export function ConfigForm() {
   } = useContext(SchoolMajorContext);
 
   return (
-    <form className="space-y-8 lg:mx-10 md:mx-8">
+    <form className="flex">
       <Combobox
         optionsFetcher={getSchools}
         placeholder="Select your school"

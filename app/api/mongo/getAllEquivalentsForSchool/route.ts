@@ -6,7 +6,7 @@ export async function GET(req: Request) {
   //get the school id from the querystring
   const url = new URL(req.url);
   const schoolId = url.searchParams.get("schoolId")!;
-  console.log(schoolId);
+
   const client = await clientPromise;
   await client.connect();
 

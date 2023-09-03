@@ -48,17 +48,30 @@ export default async function getEquivalencyForSchool(
     const columns = $(row).find("td");
 
     if (columns.length > 0) {
-      const classEntry: Class = {
-        className: $(columns[0]).text().trim(),
-        title: $(columns[1]).text().trim(),
-        level: $(columns[2]).text().trim(),
-        minimumGrade: $(columns[4]).text().trim(),
-        gaEquivalent: $(columns[7]).text().trim(),
-        gaEquivalentTitle: $(columns[8]).text().trim(),
-        creditHours: $(columns[9]).text().trim(),
-      };
+      //when the first column isn't text, that's how you know you're dealing with
+      //a AND row
+      if (!$(columns[0]).text().trim()) {
+        // modify the previous classEntry
+        const prevClass = { ...classes[classes.length - 1] };
+        //the columns are also different in this case
+        prevClass.gaEquivalent = $(columns[1]).text().trim();
+        prevClass.gaEquivalentTitle = $(columns[2]).text().trim();
+        prevClass.creditHours = $(columns[3]).text().trim();
 
-      classes.push(classEntry);
+        classes.push(prevClass);
+      } else {
+        const classEntry: Class = {
+          className: $(columns[0]).text().trim(),
+          title: $(columns[1]).text().trim(),
+          level: $(columns[2]).text().trim(),
+          minimumGrade: $(columns[4]).text().trim(),
+          gaEquivalent: $(columns[7]).text().trim(),
+          gaEquivalentTitle: $(columns[8]).text().trim(),
+          creditHours: $(columns[9]).text().trim(),
+        };
+
+        classes.push(classEntry);
+      }
     }
   });
   return classes;

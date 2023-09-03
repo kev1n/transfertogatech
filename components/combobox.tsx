@@ -69,14 +69,14 @@ export function Combobox(props: ComboboxFormProps) {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[400px] justify-between"
+          className="w-full justify-between"
         >
           {value ? label : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[400px] p-0 h-[200px]">
+      <PopoverContent className="w-full p-0 h-[200px]">
         <Command>
           <CommandInput placeholder={searchString} />
           <CommandEmpty>{noOptionsMessage}</CommandEmpty>
