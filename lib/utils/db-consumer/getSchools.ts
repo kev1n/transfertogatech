@@ -6,19 +6,9 @@ export type SchoolOptions = {
 const MONTH_IN_SECONDS = 30 * 24 * 60 * 60;
 
 export default async function getSchools() {
-  const base_url = checkEnvironment();
-  const res = await fetch(`${base_url}/api/mongo/getAllSchools`, {
+  const res = await fetch(`/api/mongo/getAllSchools`, {
     next: { revalidate: MONTH_IN_SECONDS },
   });
   const schools: SchoolOptions[] = await res.json();
   return schools;
 }
-
-export const checkEnvironment = () => {
-  let base_url =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://transfertogatech.com";
-
-  return base_url;
-};
