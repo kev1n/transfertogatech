@@ -11,14 +11,13 @@ export async function GET() {
   const client = await clientPromise;
   await client.connect();
 
-  const lastUpdatedDateOrNull = await mongoMonthlyRequestLimiter(client);
+  const shouldProceed = await mongoMonthlyRequestLimiter(client);
 
-  if (lastUpdatedDateOrNull) {
+  if (!shouldProceed) {
     return new Response(
       JSON.stringify({
         success: false,
         error: "This route can only be accessed once per month.",
-        lastUpdated: lastUpdatedDateOrNull,
       })
     );
   }
@@ -27,6 +26,7 @@ export async function GET() {
   const states = await mongoImportStates(client);
 
   const allSchools = await mongoImportSchools(client, states);
+  console.log(`Gathering equivalencies for ${allSchools.length} schools`);
 
   for (let i = 0; i < allSchools.length; i++) {
     mongoImportEquivalency(client, allSchools[i]);
