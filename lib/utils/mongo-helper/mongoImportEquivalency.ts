@@ -39,6 +39,7 @@ export default async function mongoImportEquivalency(
       `Imported ${equivalents.length} equivalencies for ${school.name}`
     );
   } catch (error) {
+    console.log(error);
     if (retryCount < 3) {
       console.log(`Retrying ${school.name}`);
       await mongoImportEquivalency(client, school, retryCount + 1);
