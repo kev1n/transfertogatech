@@ -64,9 +64,7 @@ export const metadata = {
     creator: "@shadcn",
   },
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: "/favicon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
 };
@@ -74,7 +72,9 @@ export const metadata = {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head />
+      <head>
+        <meta name="robots" content="all" />
+      </head>
       <body
         className={cn(
           "min-h-screen bg-background font-sans antialiased",

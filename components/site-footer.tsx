@@ -48,6 +48,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           target="_blank"
           rel="noreferrer"
           className="underline underline-offset-4"
+          aria-label="GitHub logo"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -94,6 +94,7 @@ export function Combobox(props: ComboboxFormProps) {
           aria-expanded={open}
           className="w-full justify-between"
           ref={buttonRef}
+          aria-label={`${value ? label : placeholder} button`}
         >
           {value ? label : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
