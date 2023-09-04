@@ -25,8 +25,12 @@ export async function GET() {
   const allSchools = await mongoImportSchools(client, states);
   console.log(`Gathering equivalencies for ${allSchools.length} schools`);
 
-  for (let i = 0; i < allSchools.length; i++) {
-    mongoImportEquivalency(client, allSchools[i]);
+  const batchSize = 200; // Adjust this based on what works for your system
+  for (let i = 0; i < allSchools.length; i += batchSize) {
+    const batch = allSchools.slice(i, i + batchSize);
+    await Promise.all(
+      batch.map((school) => mongoImportEquivalency(client, school))
+    );
   }
 
   return new Response(JSON.stringify({ success: true }));
