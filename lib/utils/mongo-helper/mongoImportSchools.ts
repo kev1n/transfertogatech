@@ -10,8 +10,10 @@ export default async function mongoImportSchools(
   const collection = db.collection("schools");
 
   const allSchools: School[] = [];
-  for (let i = 0; i < states.length; i++) {
-    const schools = await getSchoolsInState(states[i]);
+  const promises = states.map((state) => getSchoolsInState(state));
+
+  const schoolsArrays = await Promise.all(promises);
+  for (const schools of schoolsArrays) {
     allSchools.push(...schools);
   }
 
