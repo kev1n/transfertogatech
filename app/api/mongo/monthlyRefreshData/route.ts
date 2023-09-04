@@ -26,7 +26,7 @@ export async function GET() {
     );
   }
 
-  const allSchools = await mongoImportSchools(client, states);
+  const allSchools = (await mongoImportSchools(client, states)).slice(0, 5);
   console.log(`Gathering equivalencies for ${allSchools.length} schools`);
 
   const equivalenciesForAllSchools = await gatherEquivalencies(allSchools);
