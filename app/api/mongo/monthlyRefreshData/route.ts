@@ -9,13 +9,14 @@ export async function GET() {
   const client = await clientPromise;
   await client.connect();
 
-  const shouldProceed = await mongoMonthlyRequestLimiter(client);
+  const lastUpdatedDateOrNull = await mongoMonthlyRequestLimiter(client);
 
-  if (!shouldProceed) {
+  if (lastUpdatedDateOrNull) {
     return new Response(
       JSON.stringify({
         success: false,
         error: "This route can only be accessed once per month.",
+        lastUpdated: lastUpdatedDateOrNull,
       })
     );
   }

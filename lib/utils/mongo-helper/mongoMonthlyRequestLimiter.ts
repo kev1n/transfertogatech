@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 
 export default async function mongoMonthlyRequestLimiter(
   client: MongoClient
-): Promise<boolean> {
+): Promise<Date | null> {
   const accessCollection = client.db("transfer").collection("lastAccessed");
 
   // Check the last time the route was accessed
@@ -17,15 +17,19 @@ export default async function mongoMonthlyRequestLimiter(
 
     // Check if a month has passed since the last access
     if (differenceInCalendarMonths(now, lastAccessDate) < 1) {
-      return false;
+      //shouldn't proceed
+      return lastAccessDate;
+    } else {
+      //should proceed
+      await accessCollection.updateOne(
+        { routeName: "monthlyMongoUpdate" },
+        { $set: { date: now } },
+        { upsert: true }
+      );
+
+      return null;
     }
   }
 
-  await accessCollection.updateOne(
-    { routeName: "monthlyMongoUpdate" },
-    { $set: { date: now } },
-    { upsert: true }
-  );
-
-  return true;
+  return null;
 }
