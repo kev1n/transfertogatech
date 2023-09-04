@@ -39,7 +39,7 @@ export async function GET() {
   return new Response(JSON.stringify({ success: true }));
 }
 
-export async function gatherEquivalencies(schools: School[]) {
+async function gatherEquivalencies(schools: School[]) {
   const operationsPromises = schools.map((school) =>
     gatherEquivalencyForSchool(school)
   );
@@ -85,10 +85,7 @@ async function gatherEquivalencyForSchool(school: School) {
   }
 }
 
-export async function bulkImportEquivalencies(
-  client: MongoClient,
-  operations: any[]
-) {
+async function bulkImportEquivalencies(client: MongoClient, operations: any[]) {
   const db = client.db("transfer");
   const collection = db.collection("equivalents");
   return collection.bulkWrite(operations);
