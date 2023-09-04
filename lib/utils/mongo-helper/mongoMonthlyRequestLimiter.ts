@@ -11,6 +11,8 @@ export default async function mongoMonthlyRequestLimiter(
     routeName: "monthlyMongoUpdate",
   });
 
+  console.log(lastAccessed);
+
   const now = new Date();
   if (lastAccessed) {
     const lastAccessDate = new Date(lastAccessed.date);
