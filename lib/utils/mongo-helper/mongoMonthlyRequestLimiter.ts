@@ -1,31 +1,34 @@
-import { differenceInCalendarMonths } from "date-fns";
+import { differenceInHours } from "date-fns";
 import { MongoClient } from "mongodb";
 
-export default async function mongoMonthlyRequestLimiter(
+export default async function mongoDailyRequestLimiter(
   client: MongoClient
-): Promise<boolean> {
+): Promise<number | null> {
   const accessCollection = client.db("transfer").collection("lastAccessed");
 
-  // Check the last time the route was accessed
+  // Check the last time the route was accesseds
   const lastAccessed = await accessCollection.findOne({
-    routeName: "monthlyMongoUpdate",
+    routeName: "dailyMongoUpdate",
   });
 
   const now = new Date();
+  let schoolNumber = 0;
   if (lastAccessed) {
     const lastAccessDate = new Date(lastAccessed.date);
 
     // Check if a month has passed since the last access
-    if (differenceInCalendarMonths(now, lastAccessDate) < 1) {
-      return false;
+    if (false) {
+      return null;
+    } else {
+      schoolNumber = lastAccessed.schoolNumber;
     }
   }
 
   await accessCollection.updateOne(
-    { routeName: "monthlyMongoUpdate" },
-    { $set: { date: now } },
+    { routeName: "dailyMongoUpdate" },
+    { $set: { date: now, schoolNumber: schoolNumber } },
     { upsert: true }
   );
 
-  return true;
+  return schoolNumber;
 }

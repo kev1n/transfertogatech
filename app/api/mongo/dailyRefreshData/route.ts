@@ -3,7 +3,7 @@ import mongoImportSchools from "@/lib/utils/mongo-helper/mongoImportSchools";
 
 import mongoImportStates from "@/lib/utils/mongo-helper/mongoImportStates";
 import mongoImportEquivalency from "@/lib/utils/mongo-helper/mongoImportEquivalency";
-import mongoMonthlyRequestLimiter from "@/lib/utils/mongo-helper/mongoMonthlyRequestLimiter";
+import mongoDailyRequestLimiter from "@/lib/utils/mongo-helper/mongoMonthlyRequestLimiter";
 import { MongoClient } from "mongodb";
 import { Class, School } from "@/types/mongo/mongotypes";
 import getAllSubjectsInSchool from "@/lib/utils/api-helper/getAllSubjectsInSchool";
@@ -11,13 +11,14 @@ import getEquivalencyForSchool from "@/lib/utils/api-helper/getEquivalencyForSch
 
 export const dynamic = "force-dynamic";
 
+const BATCH_SIZE = 100;
 export async function GET() {
   const client = await clientPromise;
   await client.connect();
 
-  const shouldProceed = await mongoMonthlyRequestLimiter(client);
+  const schoolNumber = await mongoDailyRequestLimiter(client);
 
-  if (!shouldProceed) {
+  if (schoolNumber === null) {
     return new Response(
       JSON.stringify({
         success: false,
@@ -26,15 +27,31 @@ export async function GET() {
     );
   }
 
-  const allSchools = (await mongoImportSchools(client, states)).slice(0, 100);
-  console.log(`Gathering equivalencies for ${allSchools.length} schools`);
+  const allSchools = await mongoImportSchools(client, states);
+  const indexOfSchoolsChecked = schoolNumber + BATCH_SIZE;
+  const batched = allSchools.slice(schoolNumber, indexOfSchoolsChecked);
+  console.log(`Gathering equivalencies for ${batched.length} schools`);
 
-  const equivalenciesForAllSchools = await gatherEquivalencies(allSchools);
+  const equivalenciesForAllSchools = await gatherEquivalencies(batched);
   bulkImportEquivalencies(client, equivalenciesForAllSchools);
   /*
   for (let i = 0; i < allSchools.length; i++) {
     mongoImportEquivalency(client, allSchools[i]);
   }*/
+
+  const accessCollection = client.db("transfer").collection("lastAccessed");
+  await accessCollection.updateOne(
+    { routeName: "dailyMongoUpdate" },
+    {
+      $set: {
+        schoolNumber:
+          allSchools.length >= indexOfSchoolsChecked
+            ? indexOfSchoolsChecked
+            : 0,
+      },
+    },
+    { upsert: true }
+  );
 
   return new Response(JSON.stringify({ success: true }));
 }
