@@ -258,7 +258,7 @@ function ClassRow({ subject, gtClass, equivalencies, popoverLabel }: RowProps) {
               <DialogDescription>
                 {equivalencies?.length === 0 &&
                   "No equivalencies found. This could either mean that this school does not have the necessary courses to satisfy the GT requirement, or that not all of the appropriate courses have been evaluated yet. If you have AP credit for this course, you may not need an equivalent."}
-                <div className="mt-2 grid lg:grid-cols-3 grid-cols-2 gap-2">
+                <div className="mt-2 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-2">
                   {equivalencies?.map((equivalent) => (
                     <Card
                       key={equivalent.className}
