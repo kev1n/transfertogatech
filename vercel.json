@@ -1,0 +1,6 @@
+{
+  "crons": [{
+    "path": "/api/mongo/dailyRefreshData",
+    "schedule": "45 21 * * *"
+  }]
+}
