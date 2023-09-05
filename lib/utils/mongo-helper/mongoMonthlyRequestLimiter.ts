@@ -17,7 +17,7 @@ export default async function mongoDailyRequestLimiter(
     const lastAccessDate = new Date(lastAccessed.date);
 
     // Check if a month has passed since the last access
-    if (false) {
+    if (differenceInHours(now, lastAccessDate) < 22) {
       return null;
     } else {
       schoolNumber = lastAccessed.schoolNumber;
