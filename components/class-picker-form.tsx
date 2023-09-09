@@ -33,6 +33,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Icons } from "./icons";
+import { cores } from "@/assets/gatech/core";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function ClassPickerForm() {
   const { schoolLabel, schoolValue, majorLabel, majorValue } =
@@ -51,6 +58,43 @@ export default function ClassPickerForm() {
 
     fetchTheEquivalencies(schoolValue);
   }, [schoolValue]);
+
+  //Core classes grouped
+  let groupedEquivalentsCore: GroupedEquivalents = {};
+
+  for (const core in cores) {
+    const coreCourses = cores[core].courses.map((course) =>
+      removeSpacesAndLowercase(course)
+    );
+
+    const matches: Class[] = [];
+    const equivalents = equivalencies?.equivalents!;
+    for (const equivalent in equivalents) {
+      const equivalentCourse = removeSpacesAndLowercase(
+        equivalents[equivalent].gaEquivalent
+      );
+      if (coreCourses.includes(equivalentCourse)) {
+        matches.push(equivalents[equivalent]);
+      }
+    }
+    groupedEquivalentsCore[core] = matches;
+  }
+
+  //Electives grouped
+  const groupedEquivalentsElectives = equivalencies?.equivalents!.reduce(
+    (acc: GroupedEquivalents, equivalent) => {
+      //note: the split on the next line uses an invisible character
+      const department = equivalent.className.split("  ")[0]; // Assuming the format is always "DEPARTMENT NUMBER"
+
+      if (equivalent.creditHours == "0.0") return acc;
+      if (!acc[department]) {
+        acc[department] = [];
+      }
+      acc[department].push(equivalent);
+      return acc;
+    },
+    {}
+  );
 
   return (
     <Table>
@@ -83,7 +127,16 @@ export default function ClassPickerForm() {
             </>
           ))}
         {equivalencies && schoolValue && majorValue && (
-          <ElectiveRow equivalents={equivalencies.equivalents} />
+          <>
+            <ElectiveAndCoreRow
+              groupedEquivalents={groupedEquivalentsCore}
+              title="Core GT Classes"
+            />
+            <ElectiveAndCoreRow
+              groupedEquivalents={groupedEquivalentsElectives!}
+              title="All Transferable Classes"
+            />
+          </>
         )}
       </TableBody>
     </Table>
@@ -340,40 +393,30 @@ function removeSpacesAndLowercase(str: string) {
   return str.replace(/\s/g, "").toLowerCase();
 }
 
-interface ElectiveRowProps {
-  equivalents: Class[];
+interface ElectiveAndCoreRowProps {
+  groupedEquivalents: GroupedEquivalents;
+  title: string;
 }
+type GroupedEquivalents = {
+  [key: string]: Class[]; // or be more specific with the type if you have one for `equivalent`
+};
 
-function ElectiveRow({ equivalents }: ElectiveRowProps) {
+function ElectiveAndCoreRow({
+  groupedEquivalents,
+  title,
+}: ElectiveAndCoreRowProps) {
   const [selectedElective, setSelectedElective] = useState<Class>();
   const [selectedElectiveConfirmed, setSelectedElectiveConfirmed] =
     useState<Class>();
+  const [subject, setSubject] = useState<string>("");
 
   const [open, setOpen] = useState(false);
-
-  type GroupedEquivalentsType = {
-    [key: string]: typeof equivalents; // or be more specific with the type if you have one for `equivalent`
-  };
-  const groupedEquivalents = equivalents?.reduce(
-    (acc: GroupedEquivalentsType, equivalent) => {
-      //note: the split on the next line uses an invisible character
-      const department = equivalent.className.split("  ")[0]; // Assuming the format is always "DEPARTMENT NUMBER"
-
-      if (equivalent.creditHours == "0.0") return acc;
-      if (!acc[department]) {
-        acc[department] = [];
-      }
-      acc[department].push(equivalent);
-      return acc;
-    },
-    {}
-  );
 
   return (
     <>
       <TableRow>
-        <TableCell>Elective</TableCell>
-        <TableCell>Any GT Elective</TableCell>
+        <TableCell>{title}</TableCell>
+        <TableCell>{subject}</TableCell>
         <TableCell>
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -388,71 +431,85 @@ function ElectiveRow({ equivalents }: ElectiveRowProps) {
             </DialogTrigger>
             <DialogContent className="max-w-screen-lg mt-5 overflow-y-scroll max-h-screen">
               <DialogHeader>
-                <DialogTitle>Options For Electives</DialogTitle>
+                <DialogTitle className="text-xl">
+                  Options For {title}
+                </DialogTitle>
                 <DialogDescription>
-                  {equivalents?.length === 0 &&
-                    "No equivalencies found. Please check again later."}
-                  {groupedEquivalents &&
-                    Object.entries(groupedEquivalents).map(
-                      ([department, deptEquivalents]) => (
-                        <div key={department}>
-                          <h2>{department} Department</h2>
-                          <div className="mt-2 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-2">
-                            {deptEquivalents.map(
-                              (equivalent) =>
-                                equivalent.creditHours != "0.0" && (
-                                  <Card
-                                    key={
-                                      equivalent.className +
-                                      equivalent.gaEquivalent
-                                    }
-                                    className={`cursor-pointer hover:border-primary ${
-                                      selectedElective?.className ===
-                                        equivalent.className && "border-primary"
-                                    }`}
-                                    onClick={() => {
-                                      if (
-                                        selectedElective?.className ===
-                                        equivalent.className
-                                      ) {
-                                        setSelectedElective(undefined);
-                                      } else {
-                                        setSelectedElective(equivalent);
-                                      }
-                                    }}
-                                  >
-                                    <CardHeader>
-                                      <CardTitle>
-                                        <div className="flex items-center justify-between">
-                                          {equivalent.className}
-                                          <div className="w-7 h-7 border-2 border-gray-800 dark:border-gray-200 rounded-full relative">
-                                            {selectedElective?.className ===
-                                              equivalent.className && (
-                                              <div className="absolute bg-gray-800 dark:bg-gray-200 rounded-full w-5 h-5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
-                                            )}
-                                          </div>
-                                        </div>
-                                      </CardTitle>
-                                      <CardDescription>
-                                        {equivalent.title}
-                                      </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                      <p>
-                                        {equivalent.className} -&gt;{" "}
-                                        {equivalent.gaEquivalent}
-                                      </p>
-                                    </CardContent>
-                                    <CardFooter>
-                                      <p>{equivalent.creditHours} credits</p>
-                                    </CardFooter>
-                                  </Card>
-                                )
-                            )}
-                          </div>
-                        </div>
-                      )
-                    )}
+                  <Accordion type="single" collapsible>
+                    {groupedEquivalents &&
+                      Object.entries(groupedEquivalents).map(
+                        ([department, deptEquivalents]) => (
+                          <AccordionItem
+                            key={department}
+                            value={`item-${department}`}
+                          >
+                            <AccordionTrigger className="text-lg">
+                              {department}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <div className="mt-2 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-2">
+                                {deptEquivalents.map(
+                                  (equivalent) =>
+                                    equivalent.creditHours != "0.0" && (
+                                      <Card
+                                        key={
+                                          equivalent.className +
+                                          equivalent.gaEquivalent
+                                        }
+                                        className={`cursor-pointer hover:border-primary ${
+                                          selectedElective?.className ===
+                                            equivalent.className &&
+                                          "border-primary"
+                                        }`}
+                                        onClick={() => {
+                                          if (
+                                            selectedElective?.className ===
+                                            equivalent.className
+                                          ) {
+                                            setSelectedElective(undefined);
+                                            setSubject("");
+                                          } else {
+                                            setSelectedElective(equivalent);
+                                            setSubject(department);
+                                          }
+                                        }}
+                                      >
+                                        <CardHeader>
+                                          <CardTitle>
+                                            <div className="flex items-center justify-between">
+                                              {equivalent.className}
+                                              <div className="w-7 h-7 border-2 border-gray-800 dark:border-gray-200 rounded-full relative">
+                                                {selectedElective?.className ===
+                                                  equivalent.className && (
+                                                  <div className="absolute bg-gray-800 dark:bg-gray-200 rounded-full w-5 h-5 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+                                                )}
+                                              </div>
+                                            </div>
+                                          </CardTitle>
+                                          <CardDescription>
+                                            {equivalent.title}
+                                          </CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                          <p>
+                                            {equivalent.className} -&gt;{" "}
+                                            {equivalent.gaEquivalent}
+                                          </p>
+                                        </CardContent>
+                                        <CardFooter>
+                                          <p>
+                                            {equivalent.creditHours} credits
+                                          </p>
+                                        </CardFooter>
+                                      </Card>
+                                    )
+                                )}
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        )
+                      )}
+                  </Accordion>
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
@@ -464,7 +521,7 @@ function ElectiveRow({ equivalents }: ElectiveRowProps) {
                     setOpen(false);
                   }}
                 >
-                  {equivalents?.length === 0 ? "Close" : "Select Elective"}
+                  {selectedElective ? "Select Elective" : "Close"}
                 </Button>
               </DialogFooter>
             </DialogContent>
@@ -486,7 +543,16 @@ function ElectiveRow({ equivalents }: ElectiveRowProps) {
           </>
         )}
       </TableRow>
-      {selectedElectiveConfirmed && <ElectiveRow equivalents={equivalents} />}
+      {selectedElectiveConfirmed && (
+        <ElectiveAndCoreRow
+          groupedEquivalents={groupedEquivalents}
+          title={title}
+        />
+      )}
     </>
   );
+}
+
+function intersect(a: Array<String>, b: Array<String>) {
+  return a.filter(Set.prototype.has, new Set(b));
 }
