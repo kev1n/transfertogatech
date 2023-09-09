@@ -148,6 +148,7 @@ interface MultipleOrRowProps {
   requirements: Requirement;
   equivalents?: Class[];
   label: string;
+  disclaimer?: string;
 }
 
 function MultipleOrRow({
@@ -155,6 +156,7 @@ function MultipleOrRow({
   requirements,
   equivalents,
   label,
+  disclaimer,
 }: MultipleOrRowProps) {
   const parsedValidGTClasses = requirements.OR?.map((gtClass) =>
     removeSpacesAndLowercase(gtClass)
@@ -178,6 +180,7 @@ function MultipleOrRow({
         gtClass={label}
         equivalencies={matchedEquivalencies}
         popoverLabel={popoverLabel}
+        disclaimer={disclaimer}
       />
     </>
   );
@@ -209,6 +212,11 @@ function SubjectRows({
           requirements={requirements}
           equivalents={equivalents}
           label={"CHEM, BIO, PHYS, or EAS lab"}
+          disclaimer={
+            subjectName === "LAB2"
+              ? "NOTE: If you are in computer science, you need a two-course lab science SEQUENCE."
+              : undefined
+          }
         />
       ) : requirements.OR ? (
         <MultipleOrRow
@@ -278,9 +286,16 @@ interface RowProps {
   gtClass?: string;
   equivalencies?: Class[];
   popoverLabel?: string;
+  disclaimer?: string;
 }
 
-function ClassRow({ subject, gtClass, equivalencies, popoverLabel }: RowProps) {
+function ClassRow({
+  subject,
+  gtClass,
+  equivalencies,
+  popoverLabel,
+  disclaimer,
+}: RowProps) {
   const [selectedClass, setSelectedClass] = useState<Class>();
   const [selectedClassConfirmed, setSelectedClassConfirmed] = useState<Class>();
 
@@ -305,12 +320,14 @@ function ClassRow({ subject, gtClass, equivalencies, popoverLabel }: RowProps) {
           {/*<DialogContent className="overflow-y-scroll max-h-screen">*/}
           <DialogContent className="max-w-screen-lg mt-5 overflow-y-scroll max-h-screen">
             <DialogHeader>
-              <DialogTitle>
+              <DialogTitle className="text-xl">
                 Options For Georgia's {popoverLabel ? popoverLabel : gtClass}
               </DialogTitle>
               <DialogDescription>
+                <h1 className="text-lg">{disclaimer}</h1>
                 {equivalencies?.length === 0 &&
                   "No equivalencies found. This could either mean that this school does not have the necessary courses to satisfy the GT requirement, or that not all of the appropriate courses have been evaluated yet. If you have AP credit for this course, you may not need an equivalent."}
+
                 <div className="mt-2 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-2">
                   {equivalencies?.map((equivalent) => (
                     <Card
@@ -444,7 +461,7 @@ function ElectiveAndCoreRow({
                             value={`item-${department}`}
                           >
                             <AccordionTrigger className="text-lg">
-                              {department}
+                              {`${department}: ${deptEquivalents.length} options`}
                             </AccordionTrigger>
                             <AccordionContent>
                               <div className="mt-2 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-1 gap-2">
@@ -551,8 +568,4 @@ function ElectiveAndCoreRow({
       )}
     </>
   );
-}
-
-function intersect(a: Array<String>, b: Array<String>) {
-  return a.filter(Set.prototype.has, new Set(b));
 }
