@@ -4,6 +4,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import Image from "next/image";
 import sslight from "@/public/sslight.png";
+import { HotelsAllowBanner } from "@/components/hotels-allow-banner";
 
 export default async function IndexPage() {
   const stars = "5";
@@ -33,6 +34,9 @@ export default async function IndexPage() {
             </Link>
           </div>
         </div>
+      </section>
+      <section className="container py-4">
+        <HotelsAllowBanner utmCampaign="home-promo" />
       </section>
       <section
         id="features"

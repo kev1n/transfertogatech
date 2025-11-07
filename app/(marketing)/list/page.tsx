@@ -7,6 +7,7 @@ import {
   SchoolMajorContextProvider,
 } from "@/components/config-form";
 import { useTheme } from "next-themes";
+import { HotelsAllowBanner } from "@/components/hotels-allow-banner";
 
 export default function List() {
   return (
@@ -18,6 +19,7 @@ export default function List() {
         <h1 className="text-center text-6xl text-yellow-600 dark:text-yellow-500">
           Plan Your Transfer
         </h1>
+        <HotelsAllowBanner utmCampaign="list-promo" />
         <SchoolMajorContextProvider>
           <ConfigForm />
           <ClassPickerForm />
