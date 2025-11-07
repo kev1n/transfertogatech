@@ -11,7 +11,10 @@ export default async function IndexPage() {
 
   return (
     <>
-      <section className="space-y-6 pb-8 pt-3 md:pb-12 md:pt-10 lg:py-16">
+      <section className="space-y-6 pb-8 pt-3 md:pb-12 md:pt-2 lg:pb-16">
+        <section className="container pb-4">
+          <HotelsAllowBanner utmCampaign="home-promo" />
+        </section>
         <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
           <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
             Transfering to Georgia Tech has never been easier
@@ -35,9 +38,7 @@ export default async function IndexPage() {
           </div>
         </div>
       </section>
-      <section className="container py-4">
-        <HotelsAllowBanner utmCampaign="home-promo" />
-      </section>
+
       <section
         id="features"
         className="container space-y-6 bg-slate-100 py-8 dark:bg-transparent md:py-12 lg:py-24"

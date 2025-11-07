@@ -12,7 +12,7 @@ interface HotelsAllowBannerProps {
 
 export function HotelsAllowBanner({ utmCampaign }: HotelsAllowBannerProps) {
   return (
-    <Banner className="py-3" inset>
+    <Banner className="py-2" inset>
       <BannerTitle className="text-center w-full text-xs sm:text-sm">
         Enjoying using this tool? Please try my new product{" "}
         <a
