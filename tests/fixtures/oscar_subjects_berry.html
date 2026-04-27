@@ -1,0 +1,326 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="en">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK REL="stylesheet" HREF="/css/web_defaultapp.css" TYPE="text/css">
+<LINK REL="stylesheet" HREF="/css/web_defaultprint.css" TYPE="text/css" media="print">
+<title>GT Transfer Articulation -- Find Subject/Level/Term</title>
+<meta http-equiv="Content-Script-Type" name="Default_Script_Language" content="text/javascript">
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!-- Hide JavaScript from older browsers 
+window.onunload = function() {submitcount=0;}
+var submitcount=0;
+function checkSubmit() {
+if (submitcount == 0)
+   {
+   submitcount++;
+   return true;
+   }
+else
+   {
+alert("Your changes have already been submitted.");
+   return false;
+   }
+}
+//  End script hiding -->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!-- Hide JavaScript from older browsers 
+//  Function to open a window
+function windowOpen(window_url) {
+   helpWin = window.open(window_url,'','toolbar=yes,status=no,scrollbars=yes,menubar=yes,resizable=yes,directories=no,location=no,width=350,height=400');
+   if (document.images) { 
+       if (helpWin) helpWin.focus()
+   }
+}
+//  End script hiding -->
+</SCRIPT>
+</head>
+<body>
+<div class="headerwrapperdiv">
+<div class="pageheaderdiv1">
+<a href="#main_content" onMouseover="window.status='Go to Main Content'; return true" onMouseout="window.status=''; return true" OnFocus="window.status='Go to Main Content'; return true" onBlur="window.status=''; return true" class="skiplinks">Go to Main Content</a>
+<h1> Georgia Tech</h1></DIV><div class="headerlinksdiv">
+</DIV>
+<table  CLASS="plaintable" SUMMARY="This table displays Menu Items and Banner Search textbox." WIDTH="100%">
+<tr>
+<TD CLASS="pldefault">
+<div class="headerlinksdiv2">
+&nbsp;
+</div>
+</TD>
+<TD CLASS="pldefault"><p class="rightaligntext" /p>
+<SPAN class="pageheaderlinks">
+<a href="http://www.registrar.gatech.edu/students/transfercredit.php" accesskey="H" onClick="popup = window.open('http://www.registrar.gatech.edu/students/transfercredit.php', 'PopupPage','height=500,width=450,scrollbars=yes,resizable=yes'); return false" target="_blank" onMouseOver="window.status='';  return true" onMouseOut="window.status=''; return true"onFocus="window.status='';  return true" onBlur="window.status=''; return true"  class="submenulinktext2">HELP</a>
+|
+<a href="twbkwbis.P_Logout" accesskey="3" class="submenulinktext2">EXIT</a>
+</span>
+</TD>
+</tr>
+</table>
+</DIV>
+<div class="pagetitlediv">
+<table  CLASS="plaintable" SUMMARY="This table displays title and static header displays." WIDTH="100%">
+<tr>
+<TD CLASS="pldefault">
+&nbsp;
+</TD>
+<TD CLASS="pldefault">
+&nbsp;
+</TD>
+<TD CLASS="pldefault"><p class="rightaligntext" /p>
+<div class="staticheaders">
+</div>
+</TD>
+</tr>
+<tr>
+<TD class="bg3" width="100%" colSpan=3><img src="/wtlgifs/web_transparent.gif" alt="Transparent Image" CLASS="headerImg" TITLE="Transparent Image"  NAME="web_transparent" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=3 WIDTH=10 /></TD>
+</tr>
+</table>
+<a name="main_content"></a>
+</DIV>
+<div class="pagebodydiv">
+<!--  ** END OF twbkwbis.P_OpenDoc **  -->
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><img src="/wtlgifs/twgginfo.gif" alt="Information" CLASS="headerImg" TITLE="Information"  NAME="Info" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=24 WIDTH=27 /></td><td CLASS="indefault"><SPAN class="infotext"> Transfer Articulation - displays previously established
+         equivalent courses from the Georgia Tech transfer catalogs.</SPAN></td></tr></table><p></DIV>
+<table  CLASS="plaintable" >
+<tr>
+<td CLASS="pllabel"><LABEL><SPAN class="fieldlabeltext">State: </SPAN></LABEL></td>
+<td colspan="5" CLASS="pldefault">Georgia</td>
+</tr>
+<tr>
+<td CLASS="pllabel"><LABEL><SPAN class="fieldlabeltext">School: </SPAN></LABEL></td>
+<td colspan="5" CLASS="pldefault">Berry College</td>
+</tr>
+</table>
+<br />
+<table  CLASS="plaintable" >
+<tr>
+<TD CLASS="pldefault">
+<form action="wwsktrna.P_find_location" method="POST">
+<input type="submit" value="Start Over" />
+</form>
+</TD>
+<TD CLASS="pldefault">
+<form action="wwsktrna.P_find_state" method="POST">
+<input type="submit" value="Search Another State" />
+</form>
+</TD>
+<TD CLASS="pldefault">
+<form action="wwsktrna.P_find_school" method="POST">
+<input type="hidden" name="state_in" value="GA" />
+<input type="hidden" name="nation_in" value="" />
+<input type="submit" value="Search Another School" />
+</form>
+</TD>
+</tr>
+</table>
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><SPAN class="infotext"> <font size="4" ><b>Please choose course subject(s), level(s) and term you wish to display:</b></font></SPAN></td></tr></table><p></DIV>
+<form action="wwsktrna.P_find_subj_levl_classes" method="POST">
+<input type="hidden" name="state_in" value="GA" />
+<input type="hidden" name="nation_in" value="" />
+<table  CLASS="dataentrytable" SUMMARY="Table is used to present the course search criteria">
+<tr>
+<td CLASS="delabel" scope="row" ><LABEL for=subj_id><SPAN class="fieldlabeltext"><b>Subject(s): </b></SPAN></LABEL></td>
+<TD COLSPAN="37" CLASS="dedefault">
+<select name="sel_subj" size="10" MULTIPLE ID="subj_id">
+<option VALUE="ACC">ACC</option>
+<option VALUE="ANS">ANS</option>
+<option VALUE="ANT">ANT</option>
+<option VALUE="ART">ART</option>
+<option VALUE="BCC">BCC</option>
+<option VALUE="BIO">BIO</option>
+<option VALUE="BUS">BUS</option>
+<option VALUE="CHE">CHE</option>
+<option VALUE="CHEM">CHEM</option>
+<option VALUE="CHM">CHM</option>
+<option VALUE="COM">COM</option>
+<option VALUE="COMP">COMP</option>
+<option VALUE="CRT">CRT</option>
+<option VALUE="CSC">CSC</option>
+<option VALUE="DAN">DAN</option>
+<option VALUE="DAT">DAT</option>
+<option VALUE="ECO">ECO</option>
+<option VALUE="ECON">ECON</option>
+<option VALUE="EGR">EGR</option>
+<option VALUE="ENG">ENG</option>
+<option VALUE="ENT">ENT</option>
+<option VALUE="ESS">ESS</option>
+<option VALUE="EVS">EVS</option>
+<option VALUE="FAM">FAM</option>
+<option VALUE="FRE">FRE</option>
+<option VALUE="GOV">GOV</option>
+<option VALUE="HIS">HIS</option>
+<option VALUE="HON">HON</option>
+<option VALUE="INS">INS</option>
+<option VALUE="KIN">KIN</option>
+<option VALUE="MAT">MAT</option>
+<option VALUE="MGMT">MGMT</option>
+<option VALUE="MGT">MGT</option>
+<option VALUE="MUA">MUA</option>
+<option VALUE="MUS">MUS</option>
+<option VALUE="PAC">PAC</option>
+<option VALUE="PHI">PHI</option>
+<option VALUE="PHY">PHY</option>
+<option VALUE="POL">POL</option>
+<option VALUE="PSY">PSY</option>
+<option VALUE="REL">REL</option>
+<option VALUE="RHW">RHW</option>
+<option VALUE="SOC">SOC</option>
+<option VALUE="SPA">SPA</option>
+<option VALUE="THE">THE</option>
+</select>
+</TD>
+</tr>
+<tr>
+<TD CLASS="dedefault">
+<br />
+</TD>
+</tr>
+<tr>
+<td CLASS="delabel" scope="row" ><LABEL for=levl_id><SPAN class="fieldlabeltext"><b>Level(s): </b></SPAN></LABEL></td>
+<TD COLSPAN="37" CLASS="dedefault">
+<select name="levl_in" size="2" MULTIPLE ID="levl_id">
+<option VALUE="US">Undergraduate</option>
+</select>
+<br />
+</TD>
+</tr>
+<tr>
+<TD CLASS="dedefault">
+<br />
+</TD>
+</tr>
+<tr>
+<td CLASS="delabel" scope="row" ><LABEL for=term_id><SPAN class="fieldlabeltext"><b>Term: </b></SPAN></LABEL></td>
+<TD COLSPAN="37" CLASS="dedefault">
+<select name="term_in" size="10" ID="term_id">
+<option VALUE="202608">Fall 2026</option>
+<option VALUE="202605">Summer 2026</option>
+<option VALUE="202602">Spring 2026</option>
+<option VALUE="202508">Fall 2025</option>
+<option VALUE="202505">Summer 2025</option>
+<option VALUE="202502">Spring 2025</option>
+<option VALUE="202408">Fall 2024</option>
+<option VALUE="202405">Summer 2024</option>
+<option VALUE="202402">Spring 2024</option>
+<option VALUE="202308">Fall 2023</option>
+<option VALUE="202305">Summer 2023</option>
+<option VALUE="202302">Spring 2023</option>
+<option VALUE="202208">Fall 2022</option>
+<option VALUE="202205">Summer 2022</option>
+<option VALUE="202202">Spring 2022</option>
+<option VALUE="202108">Fall 2021</option>
+<option VALUE="202105">Summer 2021</option>
+<option VALUE="202102">Spring 2021</option>
+<option VALUE="202008">Fall 2020</option>
+<option VALUE="202005">Summer 2020</option>
+<option VALUE="202002">Spring 2020</option>
+<option VALUE="201908">Fall 2019</option>
+<option VALUE="201905">Summer 2019</option>
+<option VALUE="201902">Spring 2019</option>
+<option VALUE="201808">Fall 2018</option>
+<option VALUE="201805">Summer 2018</option>
+<option VALUE="201802">Spring 2018</option>
+<option VALUE="201708">Fall 2017</option>
+<option VALUE="201705">Summer 2017</option>
+<option VALUE="201702">Spring 2017</option>
+<option VALUE="201608">Fall 2016</option>
+<option VALUE="201605">Summer 2016</option>
+<option VALUE="201602">Spring 2016</option>
+<option VALUE="201508">Fall 2015</option>
+<option VALUE="201505">Summer 2015</option>
+<option VALUE="201502">Spring 2015</option>
+<option VALUE="201408">Fall 2014</option>
+<option VALUE="201405">Summer 2014</option>
+<option VALUE="201402">Spring 2014</option>
+<option VALUE="201308">Fall 2013</option>
+<option VALUE="201305">Summer 2013</option>
+<option VALUE="201302">Spring 2013</option>
+<option VALUE="201208">Fall 2012</option>
+<option VALUE="201205">Summer 2012</option>
+<option VALUE="201202">Spring 2012</option>
+<option VALUE="201108">Fall 2011</option>
+<option VALUE="201105">Summer 2011</option>
+<option VALUE="201102">Spring 2011</option>
+<option VALUE="201008">Fall 2010</option>
+<option VALUE="201005">Summer 2010</option>
+<option VALUE="201002">Spring 2010</option>
+<option VALUE="200908">Fall 2009</option>
+<option VALUE="200905">Summer 2009</option>
+<option VALUE="200902">Spring 2009</option>
+<option VALUE="200808">Fall 2008</option>
+<option VALUE="200805">Summer 2008</option>
+<option VALUE="200802">Spring 2008</option>
+<option VALUE="200708">Fall 2007</option>
+<option VALUE="200705">Summer 2007</option>
+<option VALUE="200702">Spring 2007</option>
+<option VALUE="200608">Fall 2006</option>
+<option VALUE="200605">Summer 2006</option>
+<option VALUE="200602">Spring 2006</option>
+<option VALUE="200508">Fall 2005</option>
+<option VALUE="200505">Summer 2005</option>
+<option VALUE="200502">Spring 2005</option>
+<option VALUE="200408">Fall 2004</option>
+<option VALUE="200405">Summer 2004</option>
+<option VALUE="200402">Spring 2004</option>
+<option VALUE="200308">Fall 2003</option>
+<option VALUE="200305">Summer 2003</option>
+<option VALUE="200302">Spring 2003</option>
+<option VALUE="200208">Fall 2002</option>
+<option VALUE="200205">Summer 2002</option>
+<option VALUE="200202">Spring 2002</option>
+<option VALUE="200108">Fall 2001</option>
+<option VALUE="200105">Summer 2001</option>
+<option VALUE="200102">Spring 2001</option>
+<option VALUE="200008">Fall 2000</option>
+<option VALUE="200005">Summer 2000</option>
+<option VALUE="200002">Spring 2000</option>
+<option VALUE="199908">Fall 1999</option>
+<option VALUE="199906">Prior Term(s)</option>
+<OPTION VALUE="999999">See Equivalent Data from All Terms</OPTION>
+</select>
+</TD>
+</tr>
+</table>
+<br />
+<input type="submit" value="Get Courses" />
+<br />
+<br />
+<br />
+<input type="hidden" name="sbgi_in" value="005059" />
+<input type="hidden" name="school_in" value="" />
+</form>
+<br />
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><SPAN class="infotext"> <I>All Rights Reserved By Georgia Tech</I></SPAN></td></tr></table><p></DIV>
+
+<!--  ** START OF twbkwbis.P_CloseDoc **  -->
+<table  CLASS="plaintable" SUMMARY="This is table displays line separator at end of the page." WIDTH="100%" cellSpacing=0 cellPadding=0 border=0><tr><TD class="bgtabon" width="100%" colSpan=2><img src="/wtlgifs/web_transparent.gif" alt="Transparent Image" CLASS="headerImg" TITLE="Transparent Image"  NAME="web_transparent" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=3 WIDTH=10 /></TD></tr></table>
+<a href="#top" onMouseover="window.status='Skip to top of page'; return true" onMouseout="window.status=''; return true" OnFocus="window.status='Skip to top of page'; return true" onBlur="window.status=''; return true" class="skiplinks">Skip to top of page</a>
+</DIV>
+<div class="footerbeforediv">
+
+</DIV>
+<div class="footerafterdiv">
+
+</DIV>
+<div class="globalafterdiv">
+
+</DIV>
+<div class="globalfooterdiv">
+
+</DIV>
+<div class="pagefooterdiv">
+<SPAN class="releasetext">Release: 8.6GT</SPAN>
+</DIV>
+<div class="poweredbydiv">
+</DIV>
+<DIV class="div1"></DIV>
+<DIV class="div2"></DIV>
+<DIV class="div3"></DIV>
+<DIV class="div4"></DIV>
+<DIV class="div5"></DIV>
+<DIV class="div6"></DIV>
+<div class="banner_copyright"> <br><h5>© 2026 Ellucian Company L.P. and its affiliates.<br></h5></div>
+</body>
+</html>

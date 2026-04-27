@@ -1,14 +1,10 @@
 import { SchoolEquivalency } from "@/types/mongo/mongotypes";
+import { fetchJson } from "@/lib/utils/fetchJson";
 
-const MONTH_IN_SECONDS = 30 * 24 * 60 * 60;
-
-export default async function getEquivalencies(schoolId: string) {
-  const res = await fetch(
-    `/api/mongo/getAllEquivalentsForSchool?schoolId=${schoolId}`,
-    {
-      next: { revalidate: MONTH_IN_SECONDS },
-    }
+export default async function getEquivalencies(
+  schoolId: string
+): Promise<SchoolEquivalency> {
+  return fetchJson<SchoolEquivalency>(
+    `/api/mongo/getAllEquivalentsForSchool?schoolId=${encodeURIComponent(schoolId)}`
   );
-  const equivalencies: SchoolEquivalency = await res.json();
-  return equivalencies;
 }

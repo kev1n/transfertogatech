@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="en">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK REL="stylesheet" HREF="/css/web_defaultapp.css" TYPE="text/css">
+<LINK REL="stylesheet" HREF="/css/web_defaultprint.css" TYPE="text/css" media="print">
+<title>GT Transfer Articulation -- Find School</title>
+<meta http-equiv="Content-Script-Type" name="Default_Script_Language" content="text/javascript">
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!-- Hide JavaScript from older browsers 
+window.onunload = function() {submitcount=0;}
+var submitcount=0;
+function checkSubmit() {
+if (submitcount == 0)
+   {
+   submitcount++;
+   return true;
+   }
+else
+   {
+alert("Your changes have already been submitted.");
+   return false;
+   }
+}
+//  End script hiding -->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!-- Hide JavaScript from older browsers 
+//  Function to open a window
+function windowOpen(window_url) {
+   helpWin = window.open(window_url,'','toolbar=yes,status=no,scrollbars=yes,menubar=yes,resizable=yes,directories=no,location=no,width=350,height=400');
+   if (document.images) { 
+       if (helpWin) helpWin.focus()
+   }
+}
+//  End script hiding -->
+</SCRIPT>
+</head>
+<body>
+<div class="headerwrapperdiv">
+<div class="pageheaderdiv1">
+<a href="#main_content" onMouseover="window.status='Go to Main Content'; return true" onMouseout="window.status=''; return true" OnFocus="window.status='Go to Main Content'; return true" onBlur="window.status=''; return true" class="skiplinks">Go to Main Content</a>
+<h1> Georgia Tech</h1></DIV><div class="headerlinksdiv">
+</DIV>
+<table  CLASS="plaintable" SUMMARY="This table displays Menu Items and Banner Search textbox." WIDTH="100%">
+<tr>
+<TD CLASS="pldefault">
+<div class="headerlinksdiv2">
+&nbsp;
+</div>
+</TD>
+<TD CLASS="pldefault"><p class="rightaligntext" /p>
+<SPAN class="pageheaderlinks">
+<a href="http://www.registrar.gatech.edu/students/transfercredit.php" accesskey="H" onClick="popup = window.open('http://www.registrar.gatech.edu/students/transfercredit.php', 'PopupPage','height=500,width=450,scrollbars=yes,resizable=yes'); return false" target="_blank" onMouseOver="window.status='';  return true" onMouseOut="window.status=''; return true"onFocus="window.status='';  return true" onBlur="window.status=''; return true"  class="submenulinktext2">HELP</a>
+|
+<a href="twbkwbis.P_Logout" accesskey="3" class="submenulinktext2">EXIT</a>
+</span>
+</TD>
+</tr>
+</table>
+</DIV>
+<div class="pagetitlediv">
+<table  CLASS="plaintable" SUMMARY="This table displays title and static header displays." WIDTH="100%">
+<tr>
+<TD CLASS="pldefault">
+&nbsp;
+</TD>
+<TD CLASS="pldefault">
+&nbsp;
+</TD>
+<TD CLASS="pldefault"><p class="rightaligntext" /p>
+<div class="staticheaders">
+</div>
+</TD>
+</tr>
+<tr>
+<TD class="bg3" width="100%" colSpan=3><img src="/wtlgifs/web_transparent.gif" alt="Transparent Image" CLASS="headerImg" TITLE="Transparent Image"  NAME="web_transparent" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=3 WIDTH=10 /></TD>
+</tr>
+</table>
+<a name="main_content"></a>
+</DIV>
+<div class="pagebodydiv">
+<!--  ** END OF twbkwbis.P_OpenDoc **  -->
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><img src="/wtlgifs/twgginfo.gif" alt="Information" CLASS="headerImg" TITLE="Information"  NAME="Info" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=24 WIDTH=27 /></td><td CLASS="indefault"><SPAN class="infotext"> Transfer Articulation - displays previously established
+         equivalent courses from the Georgia Tech transfer catalogs.</SPAN></td></tr></table><p></DIV>
+<table  CLASS="plaintable" >
+<tr>
+<td CLASS="pllabel"><LABEL><SPAN class="fieldlabeltext">State: </SPAN></LABEL></td>
+<td colspan="5" CLASS="pldefault">Georgia</td>
+</tr>
+</table>
+<br />
+<table  CLASS="plaintable" >
+<tr>
+<TD CLASS="pldefault">
+<form action="wwsktrna.P_find_location" method="POST">
+<input type="submit" value="Start Over" />
+</form>
+</TD>
+<TD CLASS="pldefault">
+<form action="wwsktrna.P_find_state" method="POST">
+<input type="submit" value="Search Another State" />
+</form>
+</TD>
+</tr>
+</table>
+<table  CLASS="plaintable" >
+<tr>
+<TD COLSPAN="5" CLASS="pldefault">
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><SPAN class="infotext"> <font  size="3"><b>What school are you transferring from?</b></font></SPAN></td></tr></table><p></DIV>
+</TD>
+<TD CLASS="pldefault">
+<form action="wwsktrna.P_find_subj_levl" method="POST">
+<input type="hidden" name="state_in" value="GA" />
+<input type="hidden" name="nation_in" value="" />
+<select name="sbgi_in" size="1">
+<option VALUE="005001">Abraham Baldwin Agriclt Coll</option>
+<option VALUE="005002">Agnes Scott College</option>
+<option VALUE="Z85222">Albany Area Voc-Techl School*</option>
+<option VALUE="005004">Albany State University</option>
+<option VALUE="003921">Albany Technical College</option>
+<option VALUE="000147">Altamaha Technical College*</option>
+<option VALUE="005015">American Intercontinental Uni*</option>
+<option VALUE="002486">American Intercontinental Univ</option>
+<option VALUE="005009">Andrew College</option>
+<option VALUE="005012">Armstrong State University</option>
+<option VALUE="005429">Art Institute Atlanta</option>
+<option VALUE="000462">Athens Technical College</option>
+<option VALUE="005725">Atlanta Metropolitan State Col</option>
+<option VALUE="005030">Atlanta Technical College</option>
+<option VALUE="002620">Augusta Technical College</option>
+<option VALUE="005406">Augusta University</option>
+<option VALUE="005062">Bainbridge State College</option>
+<option VALUE="005059">Berry College</option>
+<option VALUE="005066">Brenau University</option>
+<option VALUE="005068">Brewton-Parker College</option>
+<option VALUE="001709">Centrl Georgia Tech College</option>
+<option VALUE="005441">Chattahoochee Tech College</option>
+<option VALUE="005110">Clark Atlanta University</option>
+<option VALUE="005145">Clayton State Univ</option>
+<option VALUE="004172">Coastal Pines Technical Colg</option>
+<option VALUE="005078">College Of Coastal Georgia</option>
+<option VALUE="005123">Columbus State University</option>
+<option VALUE="005704">Columbus Technical College</option>
+<option VALUE="Z85165">Coosa Valley Voc-Techl School</option>
+<option VALUE="006124">Covenant College</option>
+<option VALUE="005167">Dalton College</option>
+<option VALUE="005026">Darton College</option>
+<option VALUE="005715">Devry University Decatur</option>
+<option VALUE="004447">East Central Technical Coll*</option>
+<option VALUE="005200">East Georgia State College</option>
+<option VALUE="001291">Emmanuel Coll-Sch Christ Min*</option>
+<option VALUE="005184">Emmanuel College Georgia</option>
+<option VALUE="005187">Emory University</option>
+<option VALUE="005220">Fort Valley State University</option>
+<option VALUE="003226">Ga Piedmont Technical College</option>
+<option VALUE="005252">Georgia Coll & State Univ</option>
+<option VALUE="004796">Georgia Gwinnett College</option>
+<option VALUE="005237">Georgia Highlands College</option>
+<option VALUE="005249">Georgia Military College</option>
+<option VALUE="002860">Georgia Northwestern Tech Coll</option>
+<option VALUE="005711">Georgia Perimeter College</option>
+<option VALUE="005253">Georgia Southern University</option>
+<option VALUE="005250">Georgia Southwestern St Univ</option>
+<option VALUE="005251">Georgia State University</option>
+<option VALUE="005256">Gordon State College</option>
+<option VALUE="005168">Gwinnett Technical College</option>
+<option VALUE="016070">Heart of Georgia Tech College*</option>
+<option VALUE="002342">Herzing University Atlanta</option>
+<option VALUE="005359">Kennesaw State University</option>
+<option VALUE="005362">Lagrange College</option>
+<option VALUE="007289">Lanier Technical College</option>
+<option VALUE="007006">Life University</option>
+<option VALUE="005439">Macon State College</option>
+<option VALUE="005409">Mercer Univ Macon*</option>
+<option VALUE="005025">Mercer University Atlanta</option>
+<option VALUE="005411">Middle Georgia State Univ</option>
+<option VALUE="005035">Middle Georgia Tech College</option>
+<option VALUE="005415">Morehouse College</option>
+<option VALUE="005417">Morris Brown College</option>
+<option VALUE="005507">North Georgia Tech College</option>
+<option VALUE="Z97111">North Metro Technical Inst</option>
+<option VALUE="005772">Oconee Fall Line Tech College</option>
+<option VALUE="Z98573">Oconee Fall Line Tech College</option>
+<option VALUE="000154">Ogeechee Technical College</option>
+<option VALUE="005521">Oglethorpe University</option>
+<option VALUE="005186">Oxford College</option>
+<option VALUE="005530">Paine College</option>
+<option VALUE="015979">Phil Coll of Osteopathic Medic</option>
+<option VALUE="005537">Piedmont University</option>
+<option VALUE="005029">Point University</option>
+<option VALUE="005568">Reinhardt University</option>
+<option VALUE="005631">Savannah C Art Desgn All Campu</option>
+<option VALUE="005609">Savannah State University</option>
+<option VALUE="003741">Savannah Tech College</option>
+<option VALUE="005616">Shorter University</option>
+<option VALUE="005619">South Georgia State College</option>
+<option VALUE="006555">South Georgia Technical Colleg</option>
+<option VALUE="005157">South University</option>
+<option VALUE="005670">Southern Crescent Tech Coll</option>
+<option VALUE="007196">Southern Regional Tech College</option>
+<option VALUE="005652">Southestrn Technical College</option>
+<option VALUE="005628">Spelman College</option>
+<option VALUE="005072">Thomas University</option>
+<option VALUE="005799">Toccoa Falls College</option>
+<option VALUE="005798">Truett-McConnell University</option>
+<option VALUE="005273">U Of North Georgia-Gainesville</option>
+<option VALUE="005497">Univ North Georgia - Dahlonega</option>
+<option VALUE="005900">University Of West Georgia</option>
+<option VALUE="005813">University of Georgia</option>
+<option VALUE="005855">Valdosta State University</option>
+<option VALUE="005895">Wesleyan College</option>
+<option VALUE="006342">West Georgia Technical College</option>
+<option VALUE="004557">Wiregrass Georgia Tech Colg</option>
+<option VALUE="005990">Young Harris College</option>
+</select>
+<input type="hidden" name="term_in" value="" />
+<input type="submit" value="Get School" />
+</form>
+</TD>
+</tr>
+</table>
+</center>
+<br />
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><SPAN class="infotext"> <I>All Rights Reserved By Georgia Tech</I></SPAN></td></tr></table><p></DIV>
+
+<!--  ** START OF twbkwbis.P_CloseDoc **  -->
+<table  CLASS="plaintable" SUMMARY="This is table displays line separator at end of the page." WIDTH="100%" cellSpacing=0 cellPadding=0 border=0><tr><TD class="bgtabon" width="100%" colSpan=2><img src="/wtlgifs/web_transparent.gif" alt="Transparent Image" CLASS="headerImg" TITLE="Transparent Image"  NAME="web_transparent" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=3 WIDTH=10 /></TD></tr></table>
+<a href="#top" onMouseover="window.status='Skip to top of page'; return true" onMouseout="window.status=''; return true" OnFocus="window.status='Skip to top of page'; return true" onBlur="window.status=''; return true" class="skiplinks">Skip to top of page</a>
+</DIV>
+<div class="footerbeforediv">
+
+</DIV>
+<div class="footerafterdiv">
+
+</DIV>
+<div class="globalafterdiv">
+
+</DIV>
+<div class="globalfooterdiv">
+
+</DIV>
+<div class="pagefooterdiv">
+<SPAN class="releasetext">Release: 8.6GT</SPAN>
+</DIV>
+<div class="poweredbydiv">
+</DIV>
+<DIV class="div1"></DIV>
+<DIV class="div2"></DIV>
+<DIV class="div3"></DIV>
+<DIV class="div4"></DIV>
+<DIV class="div5"></DIV>
+<DIV class="div6"></DIV>
+<div class="banner_copyright"> <br><h5>© 2026 Ellucian Company L.P. and its affiliates.<br></h5></div>
+</body>
+</html>

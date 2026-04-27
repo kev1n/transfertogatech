@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML lang="en">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<LINK REL="stylesheet" HREF="/css/web_defaultapp.css" TYPE="text/css">
+<LINK REL="stylesheet" HREF="/css/web_defaultprint.css" TYPE="text/css" media="print">
+<title>GT Transfer Articulation -- Find State</title>
+<meta http-equiv="Content-Script-Type" name="Default_Script_Language" content="text/javascript">
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!-- Hide JavaScript from older browsers 
+window.onunload = function() {submitcount=0;}
+var submitcount=0;
+function checkSubmit() {
+if (submitcount == 0)
+   {
+   submitcount++;
+   return true;
+   }
+else
+   {
+alert("Your changes have already been submitted.");
+   return false;
+   }
+}
+//  End script hiding -->
+</SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript">
+<!-- Hide JavaScript from older browsers 
+//  Function to open a window
+function windowOpen(window_url) {
+   helpWin = window.open(window_url,'','toolbar=yes,status=no,scrollbars=yes,menubar=yes,resizable=yes,directories=no,location=no,width=350,height=400');
+   if (document.images) { 
+       if (helpWin) helpWin.focus()
+   }
+}
+//  End script hiding -->
+</SCRIPT>
+</head>
+<body>
+<div class="headerwrapperdiv">
+<div class="pageheaderdiv1">
+<a href="#main_content" onMouseover="window.status='Go to Main Content'; return true" onMouseout="window.status=''; return true" OnFocus="window.status='Go to Main Content'; return true" onBlur="window.status=''; return true" class="skiplinks">Go to Main Content</a>
+<h1> Georgia Tech</h1></DIV><div class="headerlinksdiv">
+</DIV>
+<table  CLASS="plaintable" SUMMARY="This table displays Menu Items and Banner Search textbox." WIDTH="100%">
+<tr>
+<TD CLASS="pldefault">
+<div class="headerlinksdiv2">
+&nbsp;
+</div>
+</TD>
+<TD CLASS="pldefault"><p class="rightaligntext" /p>
+<SPAN class="pageheaderlinks">
+<a href="http://www.registrar.gatech.edu/students/transfercredit.php" accesskey="H" onClick="popup = window.open('http://www.registrar.gatech.edu/students/transfercredit.php', 'PopupPage','height=500,width=450,scrollbars=yes,resizable=yes'); return false" target="_blank" onMouseOver="window.status='';  return true" onMouseOut="window.status=''; return true"onFocus="window.status='';  return true" onBlur="window.status=''; return true"  class="submenulinktext2">HELP</a>
+|
+<a href="twbkwbis.P_Logout" accesskey="3" class="submenulinktext2">EXIT</a>
+</span>
+</TD>
+</tr>
+</table>
+</DIV>
+<div class="pagetitlediv">
+<table  CLASS="plaintable" SUMMARY="This table displays title and static header displays." WIDTH="100%">
+<tr>
+<TD CLASS="pldefault">
+&nbsp;
+</TD>
+<TD CLASS="pldefault">
+&nbsp;
+</TD>
+<TD CLASS="pldefault"><p class="rightaligntext" /p>
+<div class="staticheaders">
+</div>
+</TD>
+</tr>
+<tr>
+<TD class="bg3" width="100%" colSpan=3><img src="/wtlgifs/web_transparent.gif" alt="Transparent Image" CLASS="headerImg" TITLE="Transparent Image"  NAME="web_transparent" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=3 WIDTH=10 /></TD>
+</tr>
+</table>
+<a name="main_content"></a>
+</DIV>
+<div class="pagebodydiv">
+<!--  ** END OF twbkwbis.P_OpenDoc **  -->
+<title>Transfer Credit Equivalency - Find State</title>
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><img src="/wtlgifs/twgginfo.gif" alt="Information" CLASS="headerImg" TITLE="Information"  NAME="Info" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=24 WIDTH=27 /></td><td CLASS="indefault"><SPAN class="infotext"> Transfer Articulation - displays previously established
+         equivalent courses from the Georgia Tech transfer catalogs.</SPAN></td></tr></table><p></DIV>
+<form action="wwsktrna.P_find_location" method="POST">
+<input type="submit" value="Start Over" />
+</form>
+<form action="wwsktrna.P_find_school" method="POST">
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><SPAN class="infotext"> <font  size="3"><b>Please tell us what state you are transferring from:</b></font></SPAN></td></tr></table><p></DIV>
+<select name="state_in" size="1">
+<option VALUE="AL">Alabama</option>
+<option VALUE="AK">Alaska</option>
+<option VALUE="AZ">Arizona</option>
+<option VALUE="AR">Arkansas</option>
+<option VALUE="CA">California</option>
+<option VALUE="CO">Colorado</option>
+<option VALUE="CT">Connecticut</option>
+<option VALUE="DE">Delaware</option>
+<option VALUE="DC">District of Columbia</option>
+<option VALUE="FL">Florida</option>
+<option VALUE="GA">Georgia</option>
+<option VALUE="HI">Hawaii</option>
+<option VALUE="ID">Idaho</option>
+<option VALUE="IL">Illinois</option>
+<option VALUE="IN">Indiana</option>
+<option VALUE="IA">Iowa</option>
+<option VALUE="KS">Kansas</option>
+<option VALUE="KY">Kentucky</option>
+<option VALUE="LA">Louisiana</option>
+<option VALUE="ME">Maine</option>
+<option VALUE="MD">Maryland</option>
+<option VALUE="MA">Massachusetts</option>
+<option VALUE="MI">Michigan</option>
+<option VALUE="MN">Minnesota</option>
+<option VALUE="MS">Mississippi</option>
+<option VALUE="MO">Missouri</option>
+<option VALUE="MT">Montana</option>
+<option VALUE="NE">Nebraska</option>
+<option VALUE="NV">Nevada</option>
+<option VALUE="NH">New Hampshire</option>
+<option VALUE="NJ">New Jersey</option>
+<option VALUE="NM">New Mexico</option>
+<option VALUE="NY">New York</option>
+<option VALUE="NC">North Carolina</option>
+<option VALUE="ND">North Dakota</option>
+<option VALUE="OH">Ohio</option>
+<option VALUE="OK">Oklahoma</option>
+<option VALUE="OR">Oregon</option>
+<option VALUE="PA">Pennsylvania</option>
+<option VALUE="PR">Puerto Rico</option>
+<option VALUE="RI">Rhode Island</option>
+<option VALUE="SC">South Carolina</option>
+<option VALUE="SD">South Dakota</option>
+<option VALUE="TN">Tennessee</option>
+<option VALUE="TX">Texas</option>
+<option VALUE="UT">Utah</option>
+<option VALUE="VT">Vermont</option>
+<option VALUE="VI">Virgin Islands, U.S.</option>
+<option VALUE="VA">Virginia</option>
+<option VALUE="WA">Washington</option>
+<option VALUE="WV">West Virginia</option>
+<option VALUE="WI">Wisconsin</option>
+<option VALUE="WY">Wyoming</option>
+</select>
+<input type="hidden" name="nation_in" value="" />
+<input type="submit" value="Get State" />
+</form>
+<br />
+<div class="infotextdiv"><table  CLASS="infotexttable" SUMMARY="This layout table contains information that may be helpful in understanding the content and functionality of this page.  It could be a brief set of instructions, a description of error messages, or other special information."><tr><td CLASS="indefault"><SPAN class="infotext"> <I>All Rights Reserved By Georgia Tech</I></SPAN></td></tr></table><p></DIV>
+
+<!--  ** START OF twbkwbis.P_CloseDoc **  -->
+<table  CLASS="plaintable" SUMMARY="This is table displays line separator at end of the page." WIDTH="100%" cellSpacing=0 cellPadding=0 border=0><tr><TD class="bgtabon" width="100%" colSpan=2><img src="/wtlgifs/web_transparent.gif" alt="Transparent Image" CLASS="headerImg" TITLE="Transparent Image"  NAME="web_transparent" HSPACE=0 VSPACE=0 BORDER=0 HEIGHT=3 WIDTH=10 /></TD></tr></table>
+<a href="#top" onMouseover="window.status='Skip to top of page'; return true" onMouseout="window.status=''; return true" OnFocus="window.status='Skip to top of page'; return true" onBlur="window.status=''; return true" class="skiplinks">Skip to top of page</a>
+</DIV>
+<div class="footerbeforediv">
+
+</DIV>
+<div class="footerafterdiv">
+
+</DIV>
+<div class="globalafterdiv">
+
+</DIV>
+<div class="globalfooterdiv">
+
+</DIV>
+<div class="pagefooterdiv">
+<SPAN class="releasetext">Release: 8.6GT</SPAN>
+</DIV>
+<div class="poweredbydiv">
+</DIV>
+<DIV class="div1"></DIV>
+<DIV class="div2"></DIV>
+<DIV class="div3"></DIV>
+<DIV class="div4"></DIV>
+<DIV class="div5"></DIV>
+<DIV class="div6"></DIV>
+<div class="banner_copyright"> <br><h5>© 2026 Ellucian Company L.P. and its affiliates.<br></h5></div>
+</body>
+</html>
