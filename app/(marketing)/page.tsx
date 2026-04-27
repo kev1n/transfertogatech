@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { ArrowLeft, Eye } from "lucide-react";
 import { Header } from "@/components/planner/Header";
 import { Hero } from "@/components/planner/Hero";
 import { InlinePicker, InlineOption } from "@/components/planner/InlinePicker";
@@ -8,6 +9,7 @@ import { PlanHeader } from "@/components/planner/PlanHeader";
 import { SubjectSection } from "@/components/planner/SubjectSection";
 import { ElectivesSection } from "@/components/planner/ElectivesSection";
 import { CoursePicker } from "@/components/planner/CoursePicker";
+import { EmptyStateGuide } from "@/components/planner/EmptyStateGuide";
 import {
   PanelLayout,
   PanelProvider,
@@ -66,14 +68,16 @@ function PlannerInner() {
   const subjectGroups = useMemo(() => groupSlotsBySubject(slots), [slots]);
 
   const covered = slots.filter((s) => planner.picks[s.key]).length;
+  const totalCredits = Object.values(planner.picks).reduce(
+    (sum, pick) => sum + (pick.credits || 0),
+    0
+  );
 
   const openSlotPicker = (slot: Slot) => {
+    if (planner.readOnly) return;
     openPanel({
       subtitle: "Pick a credit source",
-      title:
-        slot.kind === "single"
-          ? slot.gtCourse
-          : slot.label,
+      title: slot.kind === "single" ? slot.gtCourse : slot.label,
       body: (
         <CoursePicker
           slot={slot}
@@ -91,24 +95,37 @@ function PlannerInner() {
 
   return (
     <div className="bg-warm pb-16">
-      <Header
-        getShareUrl={planner.getShareUrl}
-        shareDisabled={!ready}
-      />
+      <Header getShareUrl={planner.getShareUrl} shareDisabled={!ready} />
       <div className="mx-auto max-w-6xl">
-        <div className="px-4 pt-3 sm:px-6">
-          <HotelsAllowBanner utmCampaign="home-promo" />
-        </div>
-        <Hero />
-        <InlinePicker
-          schools={schools}
-          schoolsLoading={schoolsLoading}
-          majors={majors}
-          school={planner.school.value ? planner.school : null}
-          major={planner.major.value ? planner.major : null}
-          onSchoolChange={planner.setSchool}
-          onMajorChange={planner.setMajor}
-        />
+        {planner.readOnly && (
+          <div className="mx-4 mt-4 flex flex-wrap items-center gap-3 rounded-xl border border-warm-accent bg-warm-accent-soft px-3 py-2 text-[12px] text-warm-accent-ink sm:mx-6">
+            <Eye size={14} aria-hidden="true" />
+            <div className="flex-1 min-w-0">
+              <strong>Viewing a shared plan (read-only).</strong> Editing is
+              disabled. Open your own plan to make changes.
+            </div>
+            <button
+              type="button"
+              onClick={planner.exitSharedView}
+              className="inline-flex shrink-0 items-center gap-1 rounded-full bg-warm-accent px-3 py-1.5 text-[12px] font-bold text-white hover:opacity-90"
+            >
+              <ArrowLeft size={12} /> Open my plan
+            </button>
+          </div>
+        )}
+
+        {!planner.readOnly && <Hero />}
+        {!planner.readOnly && (
+          <InlinePicker
+            schools={schools}
+            schoolsLoading={schoolsLoading}
+            majors={majors}
+            school={planner.school.value ? planner.school : null}
+            major={planner.major.value ? planner.major : null}
+            onSchoolChange={planner.setSchool}
+            onMajorChange={planner.setMajor}
+          />
+        )}
 
         {ready && (
           <div className="px-4 pt-4 sm:px-6">
@@ -117,6 +134,9 @@ function PlannerInner() {
               majorLabel={planner.major.label}
               covered={covered}
               total={slots.length}
+              totalCredits={totalCredits}
+              dataTerm={equivalencies?.term}
+              dataLastScrapedAt={equivalencies?.lastScrapedAt}
             />
 
             <div className="mb-2 mt-5 text-[11px] font-bold uppercase tracking-widest text-ink-3">
@@ -131,11 +151,12 @@ function PlannerInner() {
                   picks={planner.picks}
                   onOpenSlot={openSlotPicker}
                   onClearSlot={(slot) => planner.clearPick(slot.key)}
+                  readOnly={planner.readOnly}
                 />
               ))}
             </div>
 
-            {equivalencies && (
+            {equivalencies && !planner.readOnly && (
               <ElectivesSection
                 equivalents={equivalents}
                 slots={slots}
@@ -144,11 +165,11 @@ function PlannerInner() {
           </div>
         )}
 
-        {!ready && (
-          <div className="px-4 py-12 text-center text-[13px] text-ink-3 sm:px-6">
-            Select a school and major above to start your transfer plan.
-          </div>
-        )}
+        {!ready && !planner.readOnly && <EmptyStateGuide />}
+
+        <div className="mt-10 px-4 pb-2 sm:px-6">
+          <HotelsAllowBanner utmCampaign="home-promo" />
+        </div>
       </div>
     </div>
   );

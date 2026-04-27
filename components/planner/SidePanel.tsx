@@ -83,6 +83,19 @@ export function PanelLayout({ children }: { children: React.ReactNode }) {
         {content && <PanelChrome content={content} onClose={closePanel} />}
       </aside>
 
+      {/* Mobile: dimmed backdrop above the panel — clickable to close. */}
+      <button
+        type="button"
+        aria-label="Close panel"
+        onClick={closePanel}
+        className={cn(
+          "fixed inset-0 z-30 bg-black/60 md:hidden transition-opacity duration-300",
+          open
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        )}
+      />
+
       {/* Mobile: bottom sheet — small dismiss strip on top. */}
       <aside
         className={cn(
