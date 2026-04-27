@@ -6,13 +6,15 @@
 export type Pick =
   | {
       kind: "transfer";
-      /** The transfer course code at the source school (e.g., "MAT 2211"). */
+      /** The transfer course code at the source school (e.g., "MAT 2431"). */
       sourceCode: string;
       /** Source school's title for the course (display only). */
       sourceTitle: string;
       /** GT course this picks satisfies. */
       gtCourse: string;
-      /** Credit hours of the source course. */
+      /** GT course's official title (e.g., "Integral Calculus"). */
+      gtTitle: string;
+      /** Credit hours awarded toward GT graduation. */
       credits: number;
     }
   | {
@@ -23,6 +25,8 @@ export type Pick =
       score: 3 | 4 | 5;
       /** GT course this picks satisfies. */
       gtCourse: string;
+      /** GT course's official title (e.g., "Integral Calculus"). */
+      gtTitle: string;
       /** Credit hours awarded by the grant. */
       credits: number;
     };

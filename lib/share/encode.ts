@@ -6,12 +6,12 @@ import type { PicksMap, Pick } from "@/lib/planner/picks";
  * change the schema later without breaking existing links.
  *
  * Format v1: `1.<lz-base64>` where the inner JSON is:
- *   { v: 1, sv: "<schoolValue>", sl: "<schoolLabel>",
- *     mv: "<majorValue>", ml: "<majorLabel>",
- *     p: { [slotKey]: ["t", code, title, gt, cr] | ["a", examId, score, gt, cr] } }
+ *   { v: 1, sv, sl, mv, ml,
+ *     p: { [slotKey]: ["t", code, title, gt, gtTitle, cr]
+ *                   | ["a", examId, score, gt, gtTitle, cr] } }
  *
- * The picks array form is dense to keep URLs short; tagged unions decode
- * back into the typed Pick.
+ * Decode is forward-compatible: legacy 5-element pick arrays (without
+ * gtTitle) decode with gtTitle="" so old links still work.
  */
 
 export interface SharePayload {
@@ -20,9 +20,14 @@ export interface SharePayload {
   picks: PicksMap;
 }
 
-type EncodedPick =
-  | ["t", string, string, string, number]
-  | ["a", string, 3 | 4 | 5, string, number];
+type EncodedTransferPick =
+  | ["t", string, string, string, string, number] // current
+  | ["t", string, string, string, number]; // legacy
+type EncodedAPPick =
+  | ["a", string, 3 | 4 | 5, string, string, number] // current
+  | ["a", string, 3 | 4 | 5, string, number]; // legacy
+
+type EncodedPick = EncodedTransferPick | EncodedAPPick;
 
 interface EncodedV1 {
   v: 1;
@@ -35,28 +40,58 @@ interface EncodedV1 {
 
 function encodePick(pick: Pick): EncodedPick {
   if (pick.kind === "transfer") {
-    return ["t", pick.sourceCode, pick.sourceTitle, pick.gtCourse, pick.credits];
+    return [
+      "t",
+      pick.sourceCode,
+      pick.sourceTitle,
+      pick.gtCourse,
+      pick.gtTitle,
+      pick.credits,
+    ];
   }
-  return ["a", pick.examId, pick.score, pick.gtCourse, pick.credits];
+  return ["a", pick.examId, pick.score, pick.gtCourse, pick.gtTitle, pick.credits];
 }
 
 function decodePick(encoded: EncodedPick): Pick | null {
   if (encoded[0] === "t") {
+    // Current 6-element form has gtTitle at index 4; legacy 5-element omits it.
+    if (encoded.length === 6) {
+      return {
+        kind: "transfer",
+        sourceCode: encoded[1],
+        sourceTitle: encoded[2],
+        gtCourse: encoded[3],
+        gtTitle: encoded[4],
+        credits: encoded[5],
+      };
+    }
     return {
       kind: "transfer",
       sourceCode: encoded[1],
       sourceTitle: encoded[2],
       gtCourse: encoded[3],
+      gtTitle: "",
       credits: encoded[4],
     };
   }
   if (encoded[0] === "a") {
+    if (encoded.length === 6) {
+      return {
+        kind: "ap",
+        examId: encoded[1],
+        score: encoded[2] as 3 | 4 | 5,
+        gtCourse: encoded[3] as string,
+        gtTitle: encoded[4] as string,
+        credits: encoded[5] as number,
+      };
+    }
     return {
       kind: "ap",
       examId: encoded[1],
-      score: encoded[2],
-      gtCourse: encoded[3],
-      credits: encoded[4],
+      score: encoded[2] as 3 | 4 | 5,
+      gtCourse: encoded[3] as string,
+      gtTitle: "",
+      credits: encoded[4] as number,
     };
   }
   return null;

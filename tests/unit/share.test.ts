@@ -10,6 +10,7 @@ const sample: SharePayload = {
       sourceCode: "ENG 101",
       sourceTitle: "English Composition I",
       gtCourse: "ENGL 1101",
+      gtTitle: "English Composition I",
       credits: 3,
     },
     "MATH:MATH 1552": {
@@ -17,6 +18,7 @@ const sample: SharePayload = {
       examId: "ap-calc-bc",
       score: 5,
       gtCourse: "MATH 1552",
+      gtTitle: "Integral Calculus",
       credits: 4,
     },
   },
@@ -49,5 +51,38 @@ describe("share encode/decode", () => {
     const decoded = decodeShare(encodeShare(sample));
     expect(decoded?.picks).toHaveProperty("ENGLISH:ENGL 1101");
     expect(decoded?.picks).toHaveProperty("MATH:MATH 1552");
+  });
+
+  it("decodes legacy 5-element picks (gtTitle absent → empty string)", () => {
+    // Hand-craft a v1 payload with the OLD encoding (no gtTitle).
+    const LZ = require("lz-string");
+    const legacy = {
+      v: 1,
+      sv: "001",
+      sl: "Old School",
+      mv: "Computer Science",
+      ml: "Computer Science",
+      p: {
+        "ENGLISH:ENGL 1101": ["t", "ENG 101", "English Comp", "ENGL 1101", 3],
+        "MATH:MATH 1552": ["a", "ap-calc-bc", 5, "MATH 1552", 4],
+      },
+    };
+    const encoded = "1." + LZ.compressToEncodedURIComponent(JSON.stringify(legacy));
+    const decoded = decodeShare(encoded);
+    expect(decoded?.picks["ENGLISH:ENGL 1101"]).toMatchObject({
+      kind: "transfer",
+      sourceCode: "ENG 101",
+      gtCourse: "ENGL 1101",
+      gtTitle: "",
+      credits: 3,
+    });
+    expect(decoded?.picks["MATH:MATH 1552"]).toMatchObject({
+      kind: "ap",
+      examId: "ap-calc-bc",
+      score: 5,
+      gtCourse: "MATH 1552",
+      gtTitle: "",
+      credits: 4,
+    });
   });
 });
