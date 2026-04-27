@@ -218,4 +218,53 @@ describe("refreshNextBatch durability", () => {
     // ALPHA scraped once (via failure queue), BETA scraped once (cursor batch)
     expect(fetchSubjects).toHaveBeenCalledTimes(2);
   });
+
+  it("REPLACES the equivalents array on rescrape (no append, courses removed from Oscar disappear)", async () => {
+    // Seed ALPHA with two existing courses; one will be present in the new
+    // scrape, one will not (simulating an Oscar removal).
+    const stillThere = goodEquivalent;
+    const goingAway = {
+      ...goodEquivalent,
+      className: "MAT 999",
+      gaEquivalent: "MATH 9999",
+    };
+    await client
+      .db(TRANSFER_DB)
+      .collection(Collections.equivalents)
+      .insertOne({
+        _id: ALPHA.id as any,
+        school: ALPHA.name,
+        equivalents: [stillThere, goingAway],
+        term: "old-term",
+        lastScrapedAt: new Date("2020-01-01"),
+      });
+
+    fetchSchoolsInState.mockResolvedValue([ALPHA]);
+    fetchSubjects.mockResolvedValue({
+      subjects: ["MAT"],
+      levels: [],
+      terms: [SAMPLE_TERM],
+    });
+    // New scrape returns ONLY the still-there course.
+    fetchEquivs.mockResolvedValue([stillThere]);
+
+    await refreshNextBatch(client, 0, ["GA"]);
+
+    const alpha = await client
+      .db(TRANSFER_DB)
+      .collection(Collections.equivalents)
+      .findOne({ _id: ALPHA.id as any });
+    expect(alpha?.equivalents).toHaveLength(1);
+    expect(alpha?.equivalents?.[0].className).toBe("MAT 101");
+    // The dropped course must not survive in the array.
+    expect(
+      (alpha?.equivalents as Array<{ className: string }>).some(
+        (e) => e.className === "MAT 999"
+      )
+    ).toBe(false);
+    // Term + lastScrapedAt updated to the fresh scrape values.
+    expect(alpha?.term).toBe(SAMPLE_TERM.id);
+    expect(alpha?.lastScrapedAt).toBeInstanceOf(Date);
+    expect((alpha?.lastScrapedAt as Date) > new Date("2020-01-01")).toBe(true);
+  });
 });
