@@ -1,8 +1,8 @@
-import cheerio from "cheerio";
+import { load } from "cheerio";
 import { School } from "@/types/mongo/mongotypes";
 
 export function parseSchools(html: string, state: string): School[] {
-  const $ = cheerio.load(html);
+  const $ = load(html);
   const schools: School[] = [];
 
   $("option").each((_, element) => {

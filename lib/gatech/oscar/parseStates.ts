@@ -1,7 +1,7 @@
-import cheerio from "cheerio";
+import { load } from "cheerio";
 
 export function parseStates(html: string): string[] {
-  const $ = cheerio.load(html);
+  const $ = load(html);
   const states: string[] = [];
   $("option").each((_, element) => {
     const value = $(element).attr("value");

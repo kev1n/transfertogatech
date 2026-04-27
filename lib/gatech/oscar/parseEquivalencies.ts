@@ -1,4 +1,4 @@
-import cheerio from "cheerio";
+import { load } from "cheerio";
 import { Class } from "@/types/mongo/mongotypes";
 
 /**
@@ -8,7 +8,7 @@ import { Class } from "@/types/mongo/mongotypes";
  * extends the previous class with an additional GT equivalent.
  */
 export function parseEquivalencies(html: string): Class[] {
-  const $ = cheerio.load(html);
+  const $ = load(html);
   const rows = $("table[CLASS='datadisplaytable']").find("tr");
   const classes: Class[] = [];
 

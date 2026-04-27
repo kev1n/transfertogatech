@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { createContext, Dispatch, SetStateAction, useContext, useState } from "react";
 import { Combobox } from "./combobox";
 import getSchools from "@/lib/utils/db-consumer/getSchools";
 import { getMajors } from "@/assets/gatech/majors";
@@ -14,9 +14,9 @@ const EMPTY: Selection = { value: "", label: "" };
 
 interface SchoolMajorContextValue {
   school: Selection;
-  setSchool: (next: Selection) => void;
+  setSchool: Dispatch<SetStateAction<Selection>>;
   major: Selection;
-  setMajor: (next: Selection) => void;
+  setMajor: Dispatch<SetStateAction<Selection>>;
   // Backward-compat flat accessors — keep consumers that read the old shape working.
   schoolValue: string;
   schoolLabel: string;

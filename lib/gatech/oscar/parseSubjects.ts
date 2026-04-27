@@ -1,4 +1,4 @@
-import cheerio from "cheerio";
+import { load } from "cheerio";
 
 export type Level = { id: "GS" | "US"; name: "Graduate" | "Undergraduate" };
 export type Term = { id: string; name: string };
@@ -16,7 +16,7 @@ function isLevel(id: string | undefined, name: string): Level | null {
 }
 
 export function parseSubjects(html: string): SchoolSubjects {
-  const $ = cheerio.load(html);
+  const $ = load(html);
 
   const subjects: string[] = [];
   $('select[name="sel_subj"] > option').each((_, el) => {
