@@ -1,29 +1,38 @@
 "use client";
 
+import { createContext, useContext, useState } from "react";
 import { Combobox } from "./combobox";
 import getSchools from "@/lib/utils/db-consumer/getSchools";
 import { getMajors } from "@/assets/gatech/majors";
-import { createContext, useContext, useState } from "react";
 
-// Create a context for the school and major states
-export const SchoolMajorContext = createContext<{
-  schoolLabel: string;
-  setSchoolLabel: (label: string) => void;
+interface Selection {
+  value: string;
+  label: string;
+}
+
+const EMPTY: Selection = { value: "", label: "" };
+
+interface SchoolMajorContextValue {
+  school: Selection;
+  setSchool: (next: Selection) => void;
+  major: Selection;
+  setMajor: (next: Selection) => void;
+  // Backward-compat flat accessors — keep consumers that read the old shape working.
   schoolValue: string;
-  setSchoolValue: (value: string) => void;
-  majorLabel: string;
-  setMajorLabel: (label: string) => void;
+  schoolLabel: string;
   majorValue: string;
-  setMajorValue: (value: string) => void;
-}>({
-  schoolLabel: "",
+  majorLabel: string;
+}
+
+export const SchoolMajorContext = createContext<SchoolMajorContextValue>({
+  school: EMPTY,
+  setSchool: () => {},
+  major: EMPTY,
+  setMajor: () => {},
   schoolValue: "",
-  majorLabel: "",
+  schoolLabel: "",
   majorValue: "",
-  setSchoolLabel: () => {},
-  setSchoolValue: () => {},
-  setMajorLabel: () => {},
-  setMajorValue: () => {},
+  majorLabel: "",
 });
 
 interface SchoolMajorContextProviderProps {
@@ -33,40 +42,29 @@ interface SchoolMajorContextProviderProps {
 export function SchoolMajorContextProvider({
   children,
 }: SchoolMajorContextProviderProps) {
-  const [schoolLabel, setSchoolLabel] = useState("");
-  const [schoolValue, setSchoolValue] = useState("");
-  const [majorLabel, setMajorLabel] = useState("");
-  const [majorValue, setMajorValue] = useState("");
+  const [school, setSchool] = useState<Selection>(EMPTY);
+  const [major, setMajor] = useState<Selection>(EMPTY);
+
+  const value: SchoolMajorContextValue = {
+    school,
+    setSchool,
+    major,
+    setMajor,
+    schoolValue: school.value,
+    schoolLabel: school.label,
+    majorValue: major.value,
+    majorLabel: major.label,
+  };
 
   return (
-    <SchoolMajorContext.Provider
-      value={{
-        schoolLabel,
-        setSchoolLabel,
-        schoolValue,
-        setSchoolValue,
-        majorLabel,
-        setMajorLabel,
-        majorValue,
-        setMajorValue,
-      }}
-    >
+    <SchoolMajorContext.Provider value={value}>
       {children}
     </SchoolMajorContext.Provider>
   );
 }
 
 export function ConfigForm() {
-  const {
-    schoolLabel,
-    setSchoolLabel,
-    schoolValue,
-    setSchoolValue,
-    majorLabel,
-    setMajorLabel,
-    majorValue,
-    setMajorValue,
-  } = useContext(SchoolMajorContext);
+  const { school, setSchool, major, setMajor } = useContext(SchoolMajorContext);
 
   return (
     <form className="flex space-x-0 flex-col space-y-2 sm:flex-row sm:space-x-2 sm:space-y-0">
@@ -75,20 +73,20 @@ export function ConfigForm() {
         placeholder="Select your school"
         noOptionsMessage="No school found"
         searchString="Search for a school"
-        value={schoolValue}
-        setValue={setSchoolValue}
-        label={schoolLabel}
-        setLabel={setSchoolLabel}
+        value={school.value}
+        setValue={(value) => setSchool((prev) => ({ ...prev, value }))}
+        label={school.label}
+        setLabel={(label) => setSchool((prev) => ({ ...prev, label }))}
       />
       <Combobox
         optionsFetcher={getMajors}
         placeholder="Select your major"
         noOptionsMessage="No major found"
         searchString="Search for a major"
-        value={majorValue}
-        setValue={setMajorValue}
-        label={majorLabel}
-        setLabel={setMajorLabel}
+        value={major.value}
+        setValue={(value) => setMajor((prev) => ({ ...prev, value }))}
+        label={major.label}
+        setLabel={(label) => setMajor((prev) => ({ ...prev, label }))}
       />
     </form>
   );
