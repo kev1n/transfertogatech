@@ -4,79 +4,109 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
+    /* shadcn base */
+    --background: 38 35% 95%;            /* warm parchment */
+    --foreground: 30 41% 7%;
+    --muted: 38 28% 92%;
+    --muted-foreground: 30 12% 45%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-
+    --popover-foreground: 30 41% 7%;
+    --border: 38 30% 86%;
+    --input: 38 30% 86%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
+    --card-foreground: 30 41% 7%;
+    --primary: 38 41% 18%;
+    --primary-foreground: 38 35% 95%;
+    --secondary: 38 28% 92%;
+    --secondary-foreground: 30 41% 7%;
+    --accent: 39 65% 44%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 39 65% 44%;
+    --radius: 0.75rem;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 210 40% 98%;
-
-    --ring: 215 20.2% 65.1%;
-
-    --radius: 0.5rem;
+    /* warm-almanac extensions */
+    --warm-bg: 38 35% 95%;          /* #FBF8F2 */
+    --warm-soft: 39 41% 93%;        /* #F4EFE3 */
+    --warm-surface: 0 0% 100%;
+    --warm-ink: 30 41% 7%;          /* #18130A */
+    --warm-ink-2: 36 19% 24%;       /* #4A4332 */
+    --warm-ink-3: 36 11% 46%;       /* #807A6A */
+    --warm-line: 39 41% 86%;        /* #EAE2CE */
+    --warm-line-2: 39 35% 78%;      /* #D9CFB5 */
+    --warm-accent: 39 65% 44%;      /* #B88A2A */
+    --warm-accent-soft: 41 89% 85%; /* #FBE9B5 */
+    --warm-accent-ink: 30 67% 21%;  /* #5C4112 */
+    --warm-good: 145 44% 33%;       /* #2F7A50 */
+    --warm-good-soft: 132 35% 87%;  /* #D6EBDC */
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
+    /* shadcn base */
+    --background: 30 12% 8%;
+    --foreground: 38 28% 90%;
+    --muted: 30 8% 14%;
+    --muted-foreground: 38 12% 60%;
+    --popover: 30 12% 10%;
+    --popover-foreground: 38 28% 90%;
+    --border: 30 10% 18%;
+    --input: 30 10% 18%;
+    --card: 30 10% 11%;
+    --card-foreground: 38 28% 90%;
+    --primary: 38 28% 90%;
+    --primary-foreground: 30 12% 8%;
+    --secondary: 30 8% 14%;
+    --secondary-foreground: 38 28% 90%;
+    --accent: 39 70% 55%;
+    --accent-foreground: 30 12% 8%;
+    --destructive: 0 63% 41%;
+    --destructive-foreground: 38 28% 90%;
+    --ring: 39 70% 55%;
 
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
-
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
-
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
-
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
-
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
-
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-
-    --ring: 216 34% 17%;
-
-    --radius: 0.5rem;
+    /* warm-almanac extensions, dark variants */
+    --warm-bg: 30 12% 8%;
+    --warm-soft: 30 10% 12%;
+    --warm-surface: 30 10% 11%;
+    --warm-ink: 38 28% 90%;
+    --warm-ink-2: 38 18% 75%;
+    --warm-ink-3: 38 12% 55%;
+    --warm-line: 30 10% 18%;
+    --warm-line-2: 30 10% 24%;
+    --warm-accent: 39 70% 55%;
+    --warm-accent-soft: 39 35% 22%;
+    --warm-accent-ink: 41 80% 78%;
+    --warm-good: 145 40% 55%;
+    --warm-good-soft: 145 25% 18%;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-
+  * { @apply border-border; }
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+  html { scroll-behavior: smooth; }
+}
+
+@layer utilities {
+  .bg-warm        { background-color: hsl(var(--warm-bg)); }
+  .bg-warm-soft   { background-color: hsl(var(--warm-soft)); }
+  .bg-warm-surface{ background-color: hsl(var(--warm-surface)); }
+  .text-ink       { color: hsl(var(--warm-ink)); }
+  .text-ink-2     { color: hsl(var(--warm-ink-2)); }
+  .text-ink-3     { color: hsl(var(--warm-ink-3)); }
+  .border-warm    { border-color: hsl(var(--warm-line)); }
+  .border-warm-2  { border-color: hsl(var(--warm-line-2)); }
+  .text-warm-accent      { color: hsl(var(--warm-accent)); }
+  .text-warm-accent-ink  { color: hsl(var(--warm-accent-ink)); }
+  .bg-warm-accent        { background-color: hsl(var(--warm-accent)); }
+  .bg-warm-accent-soft   { background-color: hsl(var(--warm-accent-soft)); }
+  .text-warm-good        { color: hsl(var(--warm-good)); }
+  .bg-warm-good          { background-color: hsl(var(--warm-good)); }
+  .bg-warm-good-soft     { background-color: hsl(var(--warm-good-soft)); }
+  .ring-warm-accent      { --tw-ring-color: hsl(var(--warm-accent)); }
+  .font-serif-display    { font-family: var(--font-serif), Georgia, serif; }
+  .font-mono-display     { font-family: var(--font-mono), ui-monospace, monospace; }
 }
