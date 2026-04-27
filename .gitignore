@@ -28,6 +28,9 @@ yarn-error.log*
 .env*.local
 .env
 
+# local mongo backups
+/backups/
+
 # vercel
 .vercel
 
