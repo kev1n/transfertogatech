@@ -31,6 +31,9 @@ yarn-error.log*
 # local mongo backups
 /backups/
 
+# new design system mockup (not part of the app yet)
+/Transfertogatech/
+
 # vercel
 .vercel
 
