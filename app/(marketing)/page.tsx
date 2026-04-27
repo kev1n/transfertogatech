@@ -1,95 +1,155 @@
-import { siteConfig } from "@/config/site";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { buttonVariants } from "@/components/ui/button";
-import Image from "next/image";
-import sslight from "@/public/sslight.png";
-import { HotelsAllowBanner } from "@/components/hotels-allow-banner";
+"use client";
 
-export default async function IndexPage() {
-  const stars = "5";
+import { useEffect, useMemo, useState } from "react";
+import { Header } from "@/components/planner/Header";
+import { Hero } from "@/components/planner/Hero";
+import { InlinePicker, InlineOption } from "@/components/planner/InlinePicker";
+import { PlanHeader } from "@/components/planner/PlanHeader";
+import { SubjectSection } from "@/components/planner/SubjectSection";
+import { ElectivesSection } from "@/components/planner/ElectivesSection";
+import { CoursePicker } from "@/components/planner/CoursePicker";
+import {
+  PanelLayout,
+  PanelProvider,
+  usePanel,
+} from "@/components/planner/SidePanel";
+import { HotelsAllowBanner } from "@/components/hotels-allow-banner";
+import { useSchoolEquivalencies } from "@/hooks/useSchoolEquivalencies";
+import { usePlannerState } from "@/hooks/usePlannerState";
+import getSchools from "@/lib/utils/db-consumer/getSchools";
+import { majors as MAJORS_MAP } from "@/assets/gatech/majors";
+import { buildSlots, groupSlotsBySubject, Slot } from "@/lib/planner/slots";
+import { Pick } from "@/lib/planner/picks";
+
+export default function PlannerPage() {
+  return (
+    <PanelProvider>
+      <PanelLayout>
+        <PlannerInner />
+      </PanelLayout>
+    </PanelProvider>
+  );
+}
+
+function PlannerInner() {
+  const planner = usePlannerState();
+  const { openPanel, closePanel } = usePanel();
+
+  const [schools, setSchools] = useState<InlineOption[]>([]);
+  const [schoolsLoading, setSchoolsLoading] = useState(true);
+
+  useEffect(() => {
+    getSchools()
+      .then((opts) => {
+        opts.sort((a, b) => a.label.localeCompare(b.label));
+        setSchools(opts);
+      })
+      .finally(() => setSchoolsLoading(false));
+  }, []);
+
+  const majors = useMemo(
+    () =>
+      Object.keys(MAJORS_MAP)
+        .sort()
+        .map((m) => ({ value: m, label: m })),
+    []
+  );
+
+  const equivalencies = useSchoolEquivalencies(planner.school.value);
+  const equivalents = equivalencies?.equivalents ?? [];
+
+  const slots = useMemo<Slot[]>(() => {
+    const requirements = MAJORS_MAP[planner.major.value]?.requirements;
+    return requirements ? buildSlots(requirements) : [];
+  }, [planner.major.value]);
+
+  const subjectGroups = useMemo(() => groupSlotsBySubject(slots), [slots]);
+
+  const covered = slots.filter((s) => planner.picks[s.key]).length;
+
+  const openSlotPicker = (slot: Slot) => {
+    openPanel({
+      subtitle: "Pick a credit source",
+      title:
+        slot.kind === "single"
+          ? slot.gtCourse
+          : slot.label,
+      body: (
+        <CoursePicker
+          slot={slot}
+          equivalents={equivalents}
+          onConfirm={(pick: Pick) => {
+            planner.setPick(slot.key, pick);
+            closePanel();
+          }}
+        />
+      ),
+    });
+  };
+
+  const ready = planner.school.value && planner.major.value;
 
   return (
-    <>
-      <section className="space-y-6 pb-8 pt-3 md:pb-12 md:pt-2 lg:pb-16">
-        <section className="container pb-4">
+    <div className="bg-warm pb-16">
+      <Header
+        getShareUrl={planner.getShareUrl}
+        shareDisabled={!ready}
+      />
+      <div className="mx-auto max-w-6xl">
+        <div className="px-4 pt-3 sm:px-6">
           <HotelsAllowBanner utmCampaign="home-promo" />
-        </section>
-        <div className="container flex max-w-[64rem] flex-col items-center gap-4 text-center">
-          <h1 className="font-heading text-3xl sm:text-5xl md:text-6xl lg:text-7xl">
-            Transfering to Georgia Tech has never been easier
-          </h1>
-          <p className="max-w-[42rem] leading-normal text-muted-foreground sm:text-xl sm:leading-8">
-            Built by an incoming transfer student, for incoming transfer
-            students.
-          </p>
-          <div className="space-x-4">
-            <Link href="/list" className={cn(buttonVariants({ size: "lg" }))}>
-              Get Started
-            </Link>
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-              className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-            >
-              GitHub
-            </Link>
-          </div>
         </div>
-      </section>
+        <Hero />
+        <InlinePicker
+          schools={schools}
+          schoolsLoading={schoolsLoading}
+          majors={majors}
+          school={planner.school.value ? planner.school : null}
+          major={planner.major.value ? planner.major : null}
+          onSchoolChange={planner.setSchool}
+          onMajorChange={planner.setMajor}
+        />
 
-      <section
-        id="features"
-        className="container space-y-6 bg-slate-100 py-8 dark:bg-transparent md:py-12 lg:py-24"
-      >
-        <Image src={sslight} alt="Picture of the author" />
-      </section>
-      <section id="open-source" className="container py-8 md:py-12 lg:py-24">
-        <div className="mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center">
-          <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
-            Proudly Open Source
-          </h2>
-          <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
-            {siteConfig.name} is open source and powered by open source
-            software. <br /> The code is available on{" "}
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-              className="underline underline-offset-4"
-            >
-              GitHub
-            </Link>
-            .{" "}
-          </p>
-          {stars && (
-            <Link
-              href={siteConfig.links.github}
-              target="_blank"
-              rel="noreferrer"
-              className="flex"
-            >
-              <div className="flex h-10 w-10 items-center justify-center space-x-2 rounded-md border border-muted bg-muted">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  className="h-5 w-5 text-foreground"
-                >
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"></path>
-                </svg>
-              </div>
-              <div className="flex items-center">
-                <div className="h-4 w-4 border-y-8 border-l-0 border-r-8 border-solid border-muted border-y-transparent"></div>
-                <div className="flex h-10 items-center rounded-md border border-muted bg-muted px-4 font-medium">
-                  {"At least a few"} stars on GitHub
-                </div>
-              </div>
-            </Link>
-          )}
-        </div>
-      </section>
-    </>
+        {ready && (
+          <div className="px-4 pt-4 sm:px-6">
+            <PlanHeader
+              schoolLabel={planner.school.label}
+              majorLabel={planner.major.label}
+              covered={covered}
+              total={slots.length}
+            />
+
+            <div className="mb-2 mt-5 text-[11px] font-bold uppercase tracking-widest text-ink-3">
+              Core requirements
+            </div>
+            <div className="grid gap-2.5">
+              {subjectGroups.map(({ subject, slots }) => (
+                <SubjectSection
+                  key={subject}
+                  subject={subject}
+                  slots={slots}
+                  picks={planner.picks}
+                  onOpenSlot={openSlotPicker}
+                  onClearSlot={(slot) => planner.clearPick(slot.key)}
+                />
+              ))}
+            </div>
+
+            {equivalencies && (
+              <ElectivesSection
+                equivalents={equivalents}
+                slots={slots}
+              />
+            )}
+          </div>
+        )}
+
+        {!ready && (
+          <div className="px-4 py-12 text-center text-[13px] text-ink-3 sm:px-6">
+            Select a school and major above to start your transfer plan.
+          </div>
+        )}
+      </div>
+    </div>
   );
 }

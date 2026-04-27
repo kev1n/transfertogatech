@@ -1,30 +1,5 @@
-"use client";
+import { redirect } from "next/navigation";
 
-import ClassPickerForm from "@/components/class-picker-form";
-import {
-  ConfigForm,
-  SchoolMajorContext,
-  SchoolMajorContextProvider,
-} from "@/components/config-form";
-import { useTheme } from "next-themes";
-import { HotelsAllowBanner } from "@/components/hotels-allow-banner";
-
-export default function List() {
-  return (
-    <>
-      <section
-        id="features"
-        className="container space-y-6 bg-slate-50 dark:bg-transparent py-5 md:py-7 lg:py-15"
-      >
-        <h1 className="text-center text-6xl text-yellow-600 dark:text-yellow-500">
-          Plan Your Transfer
-        </h1>
-        <HotelsAllowBanner utmCampaign="list-promo" />
-        <SchoolMajorContextProvider>
-          <ConfigForm />
-          <ClassPickerForm />
-        </SchoolMajorContextProvider>
-      </section>
-    </>
-  );
+export default function ListRedirect() {
+  redirect("/");
 }
