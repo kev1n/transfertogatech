@@ -28,16 +28,19 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
+export const viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#FBF8F2" },
+    { media: "(prefers-color-scheme: dark)", color: "#181410" },
+  ],
+};
+
 export const metadata = {
   title: {
     default: siteConfig.name,
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#FBF8F2" },
-    { media: "(prefers-color-scheme: dark)", color: "#181410" },
-  ],
   openGraph: {
     type: "website",
     locale: "en_US",

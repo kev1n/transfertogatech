@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, GraduationCap, School as SchoolIcon } from "lucide-react";
+import posthog from "posthog-js";
 import { cn } from "@/lib/utils";
 
 export interface InlineOption {
@@ -145,11 +146,19 @@ export function InlinePicker({
 
   const handleSchoolChange = (option: InlineOption) => {
     onSchoolChange(option);
+    posthog.capture("school_selected", {
+      school_value: option.value,
+      school_label: option.label,
+    });
     if (!major?.value) setMajorOpenSignal((n) => n + 1);
   };
 
   const handleMajorChange = (option: InlineOption) => {
     onMajorChange(option);
+    posthog.capture("major_selected", {
+      major_value: option.value,
+      major_label: option.label,
+    });
     if (!school?.value) setSchoolOpenSignal((n) => n + 1);
   };
 

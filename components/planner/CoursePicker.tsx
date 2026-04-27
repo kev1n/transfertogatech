@@ -12,6 +12,7 @@ import {
 } from "@/assets/gatech/apCredits";
 import { filterByAnyCourse } from "@/lib/matching/matchRequirement";
 import { formatGtCourseTitle } from "@/assets/gatech/gtCatalog";
+import posthog from "posthog-js";
 import { cn } from "@/lib/utils";
 
 interface CoursePickerProps {
@@ -41,7 +42,13 @@ export function CoursePicker({ slot, equivalents, onConfirm }: CoursePickerProps
         />
         <TabButton
           active={tab === "ap"}
-          onClick={() => setTab("ap")}
+          onClick={() => {
+            setTab("ap");
+            posthog.capture("ap_tab_viewed", {
+              gt_courses: gtCourses,
+              ap_options_count: apOptions.length,
+            });
+          }}
           icon={<GraduationCap size={13} />}
           label={`AP credit (${apOptions.length})`}
         />
@@ -50,7 +57,13 @@ export function CoursePicker({ slot, equivalents, onConfirm }: CoursePickerProps
       {tab === "transfer" ? (
         <TransferList
           options={transferOptions}
-          onPick={(eq) =>
+          onPick={(eq) => {
+            posthog.capture("course_picked", {
+              kind: "transfer",
+              source_code: eq.className,
+              gt_course: eq.gaEquivalent,
+              credits: parseFloat(eq.creditHours) || 0,
+            });
             onConfirm({
               kind: "transfer",
               sourceCode: eq.className,
@@ -58,14 +71,22 @@ export function CoursePicker({ slot, equivalents, onConfirm }: CoursePickerProps
               gtCourse: eq.gaEquivalent,
               gtTitle: eq.gaEquivalentTitle || formatGtCourseTitle(eq.gaEquivalent) || "",
               credits: parseFloat(eq.creditHours) || 0,
-            })
-          }
+            });
+          }}
         />
       ) : (
         <APList
           options={apOptions}
           gtCourses={gtCourses}
-          onPick={(exam, score, gtCourse, credits) =>
+          onPick={(exam, score, gtCourse, credits) => {
+            posthog.capture("course_picked", {
+              kind: "ap",
+              exam_id: exam.id,
+              exam_name: exam.name,
+              score,
+              gt_course: gtCourse,
+              credits,
+            });
             onConfirm({
               kind: "ap",
               examId: exam.id,
@@ -73,8 +94,8 @@ export function CoursePicker({ slot, equivalents, onConfirm }: CoursePickerProps
               gtCourse,
               gtTitle: formatGtCourseTitle(gtCourse) || "",
               credits,
-            })
-          }
+            });
+          }}
         />
       )}
     </div>

@@ -5,6 +5,7 @@ import { Slot } from "@/lib/planner/slots";
 import { Pick } from "@/lib/planner/picks";
 import { findAPExam } from "@/assets/gatech/apCredits";
 import { formatGtCourseTitle } from "@/assets/gatech/gtCatalog";
+import posthog from "posthog-js";
 import { cn } from "@/lib/utils";
 
 interface SlotRowProps {
@@ -70,6 +71,11 @@ export function SlotRow({
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
+                posthog.capture("course_pick_cleared", {
+                  slot_key: slot.key,
+                  gt_course: pick?.gtCourse,
+                  pick_kind: pick?.kind,
+                });
                 onClear();
               }}
               aria-label="Clear selection"

@@ -10,6 +10,7 @@ import { SubjectSection } from "@/components/planner/SubjectSection";
 import { ElectivesSection } from "@/components/planner/ElectivesSection";
 import { CoursePicker } from "@/components/planner/CoursePicker";
 import { EmptyStateGuide } from "@/components/planner/EmptyStateGuide";
+import { PlannerFooter } from "@/components/planner/PlannerFooter";
 import {
   PanelLayout,
   PanelProvider,
@@ -171,6 +172,8 @@ function PlannerInner() {
           <HotelsAllowBanner utmCampaign="home-promo" />
         </div>
       </div>
+
+      <PlannerFooter />
     </div>
   );
 }

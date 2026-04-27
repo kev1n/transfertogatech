@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import posthog from "posthog-js";
 import { decodeShare, encodeShare, SharePayload } from "@/lib/share/encode";
 import type { Pick, PicksMap } from "@/lib/planner/picks";
 
@@ -60,6 +61,11 @@ export function usePlannerState() {
     if (sharedDecoded) {
       setState(sharedDecoded);
       setReadOnly(true);
+      posthog.capture("shared_plan_viewed", {
+        school_label: sharedDecoded.school.label,
+        major_label: sharedDecoded.major.label,
+        picks_count: Object.keys(sharedDecoded.picks).length,
+      });
     } else {
       const local = readLocal();
       if (local) setState(local);
@@ -115,6 +121,7 @@ export function usePlannerState() {
   /** Drops the `?s=` param and reloads the saved local plan. */
   const exitSharedView = useCallback(() => {
     if (typeof window === "undefined") return;
+    posthog.capture("shared_plan_exited");
     const url = new URL(window.location.href);
     url.searchParams.delete("s");
     window.history.replaceState({}, "", url.toString());

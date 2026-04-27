@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
+import posthog from "posthog-js";
 import { ModeToggle } from "@/components/mode-toggle";
 
 function LogoMark({ className }: { className?: string }) {
@@ -44,6 +45,7 @@ export function Header({ getShareUrl, shareDisabled }: HeaderProps) {
       // Fallback: open prompt with URL
       window.prompt("Copy this link to share your plan:", url);
     }
+    posthog.capture("plan_shared");
   };
 
   return (
