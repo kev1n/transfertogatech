@@ -11,6 +11,7 @@ import { ElectivesSection } from "@/components/planner/ElectivesSection";
 import { CoursePicker } from "@/components/planner/CoursePicker";
 import { EmptyStateGuide } from "@/components/planner/EmptyStateGuide";
 import { PlannerFooter } from "@/components/planner/PlannerFooter";
+import { DiscordInvite } from "@/components/planner/DiscordInvite";
 import {
   PanelLayout,
   PanelProvider,
@@ -168,7 +169,11 @@ function PlannerInner() {
 
         {!ready && !planner.readOnly && <EmptyStateGuide />}
 
-        <div className="mt-10 px-4 pb-2 sm:px-6">
+        <div className="mt-10 px-4 sm:px-6">
+          <DiscordInvite />
+        </div>
+
+        <div className="mt-3 px-4 pb-2 sm:px-6">
           <HotelsAllowBanner utmCampaign="home-promo" />
         </div>
       </div>

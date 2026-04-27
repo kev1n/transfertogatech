@@ -1,4 +1,4 @@
-import { Github, Linkedin } from "lucide-react";
+import { Github, Linkedin, MessageCircle } from "lucide-react";
 import { siteConfig } from "@/config/site";
 
 export function PlannerFooter() {
@@ -23,6 +23,15 @@ export function PlannerFooter() {
             className="inline-flex items-center gap-1 font-semibold text-ink-2 underline underline-offset-2 hover:text-ink"
           >
             <Github size={12} aria-hidden="true" /> GitHub
+          </a>
+          . Community on{" "}
+          <a
+            href="https://discord.gg/gBfnGd4fxQ"
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1 font-semibold text-ink-2 underline underline-offset-2 hover:text-ink"
+          >
+            <MessageCircle size={12} aria-hidden="true" /> Discord
           </a>
           .
         </p>

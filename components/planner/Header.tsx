@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Check, Share2 } from "lucide-react";
 import posthog from "posthog-js";
 import { ModeToggle } from "@/components/mode-toggle";
+import { DiscordMark } from "./DiscordInvite";
 
 function LogoMark({ className }: { className?: string }) {
   return (
@@ -49,7 +50,7 @@ export function Header({ getShareUrl, shareDisabled }: HeaderProps) {
   };
 
   return (
-    <header className="border-b border-warm bg-warm">
+    <header className="sticky top-0 z-30 border-b border-warm bg-warm/95 backdrop-blur supports-[backdrop-filter]:bg-warm/80">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:px-6">
         <a href="/" className="flex items-center gap-2.5">
           <LogoMark className="h-9 w-9 text-warm-accent" />
@@ -63,6 +64,18 @@ export function Header({ getShareUrl, shareDisabled }: HeaderProps) {
           </div>
         </a>
         <div className="flex-1" />
+        <a
+          href="https://discord.gg/gBfnGd4fxQ"
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Join the Discord"
+          className="inline-flex items-center text-ink-2 hover:text-ink"
+        >
+          <DiscordMark className="h-4 w-4 sm:hidden" />
+          <span className="hidden text-[13px] font-semibold sm:inline">
+            Discord
+          </span>
+        </a>
         <ModeToggle />
         <button
           type="button"
