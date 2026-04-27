@@ -3,6 +3,8 @@ export type SchoolEquivalency = {
   school: string;
   equivalents: Class[];
   term: string;
+  /** Set on every successful crawl write; undefined for legacy docs. */
+  lastScrapedAt?: Date;
 };
 
 export interface Class {
