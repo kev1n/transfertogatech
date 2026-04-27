@@ -1,9 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import { Check, Share2 } from "lucide-react";
 import { ModeToggle } from "@/components/mode-toggle";
+
+function LogoMark({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 400 400"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="16"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M148.113 270.455C178.811 224.075 242.668 181.298 297.992 215.94C304.883 220.254 314.779 228.618 316.462 236.906C325.434 281.055 219.899 337.713 168.712 307.497C164.995 305.3 145.854 281.143 143.853 281.636C137.464 283.209 118.718 290.291 114.019 294.914C113.573 295.353 132.91 288.624 150.246 288.624" />
+      <path d="M191.543 237.122C205.369 258.398 200.625 296.531 200.625 311.775" />
+      <path d="M228.193 220.22C239.777 244.764 237.816 272.365 232.076 297.689" />
+      <path d="M284.838 251.531C284.957 252.267 284.477 252.976 284.297 253.7" />
+      <path d="M215.398 191.049C218.251 170.409 164.043 73.6845 139.078 86.0953C118.061 96.542 179.056 165.553 186.868 173.32C193.432 179.846 212.414 199.306 208.263 191.049C202.171 178.929 175.365 166.868 164.043 161.975C63.9156 118.688 52.5083 209.528 152.632 194.597C167.952 192.312 183.247 188.576 198.279 186.085" />
+    </svg>
+  );
+}
 
 interface HeaderProps {
   getShareUrl: () => string;
@@ -29,13 +50,7 @@ export function Header({ getShareUrl, shareDisabled }: HeaderProps) {
     <header className="border-b border-warm bg-warm">
       <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3 sm:px-6">
         <a href="/" className="flex items-center gap-2.5">
-          <Image
-            src="/logo.svg"
-            width={32}
-            height={32}
-            alt=""
-            className="h-8 w-8"
-          />
+          <LogoMark className="h-9 w-9 text-warm-accent" />
           <div className="leading-tight">
             <div className="text-sm font-extrabold tracking-tight text-ink">
               transfer<span className="text-warm-accent">to</span>gatech

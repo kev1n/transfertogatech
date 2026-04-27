@@ -16,6 +16,11 @@ interface InlineComboboxProps {
   onChange: (option: InlineOption) => void;
   options: InlineOption[];
   loading?: boolean;
+  /**
+   * Bumping this counter from the parent opens the dropdown — used to
+   * auto-open the *other* picker after the user selects one.
+   */
+  autoOpenSignal?: number;
 }
 
 function InlineCombobox({
@@ -25,10 +30,18 @@ function InlineCombobox({
   onChange,
   options,
   loading,
+  autoOpenSignal,
 }: InlineComboboxProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const ref = useRef<HTMLDivElement>(null);
+
+  // Auto-open whenever the parent bumps the signal counter. Skip the
+  // initial mount (autoOpenSignal=0) so we don't pop on first render.
+  useEffect(() => {
+    if (!autoOpenSignal) return;
+    setOpen(true);
+  }, [autoOpenSignal]);
 
   useEffect(() => {
     if (!open) return;
@@ -124,22 +137,40 @@ export function InlinePicker({
   onSchoolChange,
   onMajorChange,
 }: InlinePickerProps) {
+  // Counter signals — bumping these triggers the *other* combobox to open.
+  // We use refs to track the most recent bumps without re-rendering on the
+  // bump itself; the actual prop is a state value updated via setSignal.
+  const [schoolOpenSignal, setSchoolOpenSignal] = useState(0);
+  const [majorOpenSignal, setMajorOpenSignal] = useState(0);
+
+  const handleSchoolChange = (option: InlineOption) => {
+    onSchoolChange(option);
+    if (!major?.value) setMajorOpenSignal((n) => n + 1);
+  };
+
+  const handleMajorChange = (option: InlineOption) => {
+    onMajorChange(option);
+    if (!school?.value) setSchoolOpenSignal((n) => n + 1);
+  };
+
   return (
     <div className="mx-4 mt-4 grid gap-2 rounded-2xl border border-warm bg-warm-surface p-3.5 sm:mx-6 sm:grid-cols-2">
       <InlineCombobox
         icon={<SchoolIcon size={15} />}
         placeholder="Pick your current school"
         value={school}
-        onChange={onSchoolChange}
+        onChange={handleSchoolChange}
         options={schools}
         loading={schoolsLoading}
+        autoOpenSignal={schoolOpenSignal}
       />
       <InlineCombobox
         icon={<GraduationCap size={15} />}
         placeholder="Pick your GT major"
         value={major}
-        onChange={onMajorChange}
+        onChange={handleMajorChange}
         options={majors}
+        autoOpenSignal={majorOpenSignal}
       />
     </div>
   );

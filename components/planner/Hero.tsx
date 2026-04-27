@@ -15,7 +15,14 @@ export function Hero() {
         <Sparkles size={12} /> NEW · AP credit + transfer planner
       </div>
       <h1 className="font-serif-display mt-3 max-w-3xl text-[44px] leading-[1.05] tracking-tight text-ink sm:text-[52px]">
-        The free <em className="italic text-warm-accent-ink">Georgia Tech</em>{" "}
+        The free{" "}
+        <span className="relative inline-block italic text-warm-accent-ink">
+          <span
+            aria-hidden="true"
+            className="absolute inset-x-[-0.15em] bottom-[0.12em] top-[0.45em] -z-10 -rotate-1 rounded-[3px] bg-warm-accent-soft"
+          />
+          <span className="relative">Georgia Tech</span>
+        </span>{" "}
         transfer credit tool
       </h1>
       <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-ink-2">
