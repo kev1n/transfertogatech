@@ -28,11 +28,11 @@
     "cmdk": "^0.2.0",
     "date-fns": "^2.30.0",
     "debug": "^4.3.4",
-    "eslint-config-next": "^15.5.15",
+    "eslint-config-next": "^15.5.28",
     "lucide-react": "^0.553.0",
     "lz-string": "^1.5.0",
     "mongodb": "^4.8.1",
-    "next": "^15.5.15",
+    "next": "^15.5.28",
     "next-themes": "^0.2.1",
     "posthog-js": "^1.372.1",
     "posthog-node": "^5.30.4",
@@ -65,5 +65,10 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.5"
+  },
+  "overrides": {
+    "next": {
+      "postcss": "^8.5.31"
+    }
   }
 }
